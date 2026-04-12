@@ -1,0 +1,31 @@
+PhotoPlat UI Design Prompt
+Build UI for PhotoPlat, a photographer listing and booking platform targeting Nepal. Use the following design system consistently:
+Theme: Warm Earthy — organic, refined, editorial feel.
+Colors:
+
+Background: #F5F0E8 (cream), #EDE5D4 (parchment), #D9CABA (sand)
+Accent / CTA: #C1684C (terracotta)
+Text: #3B2B1F (espresso), #7A5C3E (bark), #B8956A (clay)
+Dark surfaces: #2A1E15 (deep espresso), #3B2B1F (espresso)
+Supporting: #6B7A5E (moss), #9DAF8E (sage)
+
+Typography:
+
+Display / headings: Cormorant Garamond (serif, weight 300–600, italic for emphasis)
+Body / UI: Jost (sans-serif, weight 300–600)
+Load both from Google Fonts
+
+Design Patterns:
+
+Border radius: 2px (sharp, intentional — not rounded)
+Borders: 1px solid rgba(184,149,106,0.2) (subtle clay tone)
+Section tags: tiny uppercase spaced label with a short left-line in terracotta
+Buttons: terracotta fill (primary), dark espresso fill (secondary), 2px radius
+Cards: parchment background, sharp corners, hover lifts with soft shadow
+Dark sections: espresso background with low-opacity terracotta accents and card glow-on-hover
+Grain overlay: subtle SVG noise texture at 3% opacity fixed over the page
+Navbar: fixed, frosted glass (rgba(245,240,232,0.92) + backdrop-filter: blur)
+Spacing: generous — sections use 6rem vertical padding
+
+Libraries: Tailwind CSS (CDN), FontAwesome 4.7, Google Fonts
+Tone: Warm, trustworthy, editorial. Feels like a curated magazine, not a generic SaaS app.

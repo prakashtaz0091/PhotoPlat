@@ -1,0 +1,755 @@
+{% extends "main/base.html" %}
+
+{% block base_css %}
+{% endblock base_css %}
+
+
+{% block extra_head %}
+
+<style>
+    *,
+    *::before,
+    *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Jost', sans-serif;
+        background: #F5F0E8;
+        color: #3B2B1F;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ---- LEFT PANEL ---- */
+    .left-panel {
+        background: #2A1E15;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 3.5rem;
+        min-height: 100vh;
+    }
+
+    .left-panel img.bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.35;
+    }
+
+    .left-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, #2A1E15 40%, transparent 100%);
+    }
+
+    .left-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .left-logo {
+        position: absolute;
+        top: 3.5rem;
+        left: 3.5rem;
+        z-index: 2;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #EDE5D4;
+        letter-spacing: 0.04em;
+        text-decoration: none;
+    }
+
+    .left-logo span {
+        color: #C1684C;
+    }
+
+    .left-tag {
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #C1684C;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .left-tag::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 1px;
+        background: #C1684C;
+    }
+
+    .left-heading {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2rem, 3vw, 2.8rem);
+        font-weight: 300;
+        line-height: 1.1;
+        color: #EDE5D4;
+        margin-bottom: 1.25rem;
+    }
+
+    .left-heading em {
+        font-style: italic;
+        color: #C1684C;
+    }
+
+    .left-desc {
+        font-size: 0.84rem;
+        font-weight: 300;
+        color: #B8956A;
+        line-height: 1.85;
+        max-width: 340px;
+        margin-bottom: 2rem;
+    }
+
+    .left-perks {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .perk {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.8rem;
+        color: #D9CABA;
+    }
+
+    .perk-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(193, 104, 76, 0.2);
+        border: 1px solid rgba(193, 104, 76, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #C1684C;
+        font-size: 9px;
+    }
+
+    /* ---- RIGHT PANEL ---- */
+    .right-panel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 3rem;
+        background: #F5F0E8;
+    }
+
+    .form-box {
+        width: 100%;
+        max-width: 440px;
+    }
+
+    .form-eyebrow {
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #C1684C;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .form-eyebrow::before {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 1px;
+        background: #C1684C;
+    }
+
+    .form-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.6rem;
+        font-weight: 300;
+        line-height: 1.1;
+        color: #3B2B1F;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-title em {
+        font-style: italic;
+        color: #C1684C;
+    }
+
+    .form-subtitle {
+        font-size: 0.83rem;
+        color: #B8956A;
+        font-weight: 300;
+        margin-bottom: 2.5rem;
+        line-height: 1.7;
+    }
+
+    /* Fields */
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .field label {
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #7A5C3E;
+    }
+
+    .input-wrap {
+        position: relative;
+    }
+
+    .input-wrap i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #B8956A;
+        font-size: 14px;
+        pointer-events: none;
+        transition: color 0.2s;
+    }
+
+    .input-wrap input {
+        width: 100%;
+        height: 48px;
+        padding: 0 14px 0 40px;
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.3);
+        border-radius: 2px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 400;
+        color: #3B2B1F;
+        outline: none;
+        transition: border-color 0.2s, background 0.2s;
+        -webkit-appearance: none;
+    }
+
+    .input-wrap input::placeholder {
+        color: #B8956A;
+        font-weight: 300;
+    }
+
+    .input-wrap input:focus {
+        border-color: #C1684C;
+        background: #F5F0E8;
+        box-shadow: 0 0 0 3px rgba(193, 104, 76, 0.1);
+    }
+
+    .input-wrap input:focus+i,
+    .input-wrap:focus-within i {
+        color: #C1684C;
+    }
+
+    .input-wrap .toggle-pw {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #B8956A;
+        font-size: 14px;
+        cursor: pointer;
+        pointer-events: all;
+        transition: color 0.2s;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .input-wrap .toggle-pw:hover {
+        color: #C1684C;
+    }
+
+    .input-wrap input.has-toggle {
+        padding-right: 40px;
+    }
+
+    /* Password strength */
+    .pw-strength {
+        margin-top: 6px;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+    }
+
+    .strength-bar {
+        height: 2px;
+        flex: 1;
+        background: rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        transition: background 0.3s;
+    }
+
+    .strength-bar.filled-weak {
+        background: #C1684C;
+    }
+
+    .strength-bar.filled-fair {
+        background: #B8956A;
+    }
+
+    .strength-bar.filled-strong {
+        background: #6B7A5E;
+    }
+
+    .strength-label {
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #B8956A;
+        min-width: 44px;
+        text-align: right;
+        transition: color 0.3s;
+    }
+
+    /* Error state */
+    .field-error {
+        font-size: 0.72rem;
+        color: #C1684C;
+        display: none;
+        align-items: center;
+        gap: 0.3rem;
+        margin-top: 4px;
+    }
+
+    .field-error.visible {
+        display: flex;
+    }
+
+    /* Terms */
+    .terms-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .terms-row input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin-top: 2px;
+        accent-color: #C1684C;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    .terms-row label {
+        font-size: 0.78rem;
+        color: #7A5C3E;
+        line-height: 1.6;
+        cursor: pointer;
+    }
+
+    .terms-row label a {
+        color: #C1684C;
+        text-decoration: none;
+    }
+
+    .terms-row label a:hover {
+        text-decoration: underline;
+    }
+
+    /* Submit */
+    .btn-register {
+        width: 100%;
+        height: 50px;
+        background: #C1684C;
+        color: #F5F0E8;
+        border: none;
+        border-radius: 2px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-register:hover {
+        background: #a8573d;
+        transform: translateY(-1px);
+    }
+
+    .btn-register:active {
+        transform: translateY(0);
+    }
+
+    .btn-register:disabled {
+        background: #D9CABA;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Divider */
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(184, 149, 106, 0.25);
+    }
+
+    .divider span {
+        font-size: 0.72rem;
+        color: #B8956A;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    /* Social */
+    .social-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-social {
+        height: 44px;
+        border: 1px solid rgba(184, 149, 106, 0.3);
+        border-radius: 2px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: #7A5C3E;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-social:hover {
+        border-color: #C1684C;
+        color: #C1684C;
+        background: rgba(193, 104, 76, 0.04);
+    }
+
+    .btn-social i {
+        font-size: 15px;
+    }
+
+    /* Login link */
+    .login-link {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #B8956A;
+    }
+
+    .login-link a {
+        color: #C1684C;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        body {
+            grid-template-columns: 1fr;
+        }
+
+        .left-panel {
+            display: none;
+        }
+
+        .right-panel {
+            padding: 3rem 1.5rem;
+        }
+    }
+</style>
+{% endblock extra_head %}
+
+{% block navbar %}
+{% endblock navbar %}
+
+{% block content %}
+
+<!-- ====== LEFT PANEL ====== -->
+<div class="left-panel">
+    <img class="bg" src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=900&q=80"
+        alt="Photography background" />
+    <div class="left-overlay"></div>
+
+    <a href="#" class="left-logo">Photo<span>Plat</span></a>
+
+    <div class="left-content">
+        <div class="left-tag">Join Our Network</div>
+        <h2 class="left-heading">
+            Share Your Vision<br>with the <em>World</em>
+        </h2>
+        <p class="left-desc">
+            Join over 2,400 talented photographers already earning on PhotoPlat. Set your rates, build your
+            portfolio, and get booked — all in one place.
+        </p>
+        <div class="left-perks">
+            <div class="perk">
+                <div class="perk-dot"><i class="fa fa-check"></i></div>
+                Free to register, no hidden fees
+            </div>
+            <div class="perk">
+                <div class="perk-dot"><i class="fa fa-check"></i></div>
+                Get discovered by thousands of clients
+            </div>
+            <div class="perk">
+                <div class="perk-dot"><i class="fa fa-check"></i></div>
+                Secure, on-time payments every time
+            </div>
+            <div class="perk">
+                <div class="perk-dot"><i class="fa fa-check"></i></div>
+                Full control over your schedule & pricing
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== RIGHT PANEL ====== -->
+<div class="right-panel">
+    <div class="form-box">
+
+        <div class="form-eyebrow">Photographer Registration</div>
+        <h1 class="form-title">Create your <em>account</em></h1>
+        <p class="form-subtitle">Start your journey as a photographer on PhotoPlat. It only takes a minute.</p>
+
+        <div class="field-group">
+
+            <!-- Email -->
+            <div class="field">
+                <label for="email">Email Address</label>
+                <div class="input-wrap">
+                    <i class="fa fa-envelope-o"></i>
+                    <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+                </div>
+                <div class="field-error" id="email-error">
+                    <i class="fa fa-exclamation-circle"></i> Please enter a valid email address.
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="field">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="password" class="has-toggle" placeholder="Create a strong password"
+                        autocomplete="new-password" />
+                    <button class="toggle-pw" type="button" data-target="password" tabindex="-1">
+                        <i class="fa fa-eye-slash"></i>
+                    </button>
+                </div>
+                <div class="pw-strength" id="pw-strength" style="display:none;">
+                    <div class="strength-bar" id="bar1"></div>
+                    <div class="strength-bar" id="bar2"></div>
+                    <div class="strength-bar" id="bar3"></div>
+                    <div class="strength-bar" id="bar4"></div>
+                    <span class="strength-label" id="strength-label"></span>
+                </div>
+                <div class="field-error" id="password-error">
+                    <i class="fa fa-exclamation-circle"></i> Password must be at least 8 characters.
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="field">
+                <label for="confirm">Confirm Password</label>
+                <div class="input-wrap">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="confirm" class="has-toggle" placeholder="Repeat your password"
+                        autocomplete="new-password" />
+                    <button class="toggle-pw" type="button" data-target="confirm" tabindex="-1">
+                        <i class="fa fa-eye-slash"></i>
+                    </button>
+                </div>
+                <div class="field-error" id="confirm-error">
+                    <i class="fa fa-exclamation-circle"></i> Passwords do not match.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Terms -->
+        <div class="terms-row">
+            <input type="checkbox" id="terms" />
+            <label for="terms">
+                I agree to PhotoPlat's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I
+                confirm that I am at least 18 years old.
+            </label>
+        </div>
+
+        <!-- Submit -->
+        <button class="btn-register" id="submit-btn" disabled>
+            <i class="fa fa-camera"></i> Create Photographer Account
+        </button>
+
+        <!-- Divider -->
+        <div class="divider"><span>or register with</span></div>
+
+        <!-- Social -->
+        <div class="social-row">
+            <button class="btn-social"><i class="fa fa-google"></i> Google</button>
+            <button class="btn-social"><i class="fa fa-facebook"></i> Facebook</button>
+        </div>
+
+        <!-- Login link -->
+        <div class="login-link">
+            Already registered? <a href="#">Login to your account</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const emailEl = document.getElementById('email');
+    const passwordEl = document.getElementById('password');
+    const confirmEl = document.getElementById('confirm');
+    const termsEl = document.getElementById('terms');
+    const submitBtn = document.getElementById('submit-btn');
+    const pwStrength = document.getElementById('pw-strength');
+    const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+    const strLabel = document.getElementById('strength-label');
+
+    function getStrength(pw) {
+        let score = 0;
+        if (pw.length >= 8) score++;
+        if (pw.length >= 12) score++;
+        if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+        if (/[0-9]/.test(pw) && /[^A-Za-z0-9]/.test(pw)) score++;
+        return score;
+    }
+
+    function updateStrength(pw) {
+        if (!pw) { pwStrength.style.display = 'none'; return; }
+        pwStrength.style.display = 'flex';
+        const score = getStrength(pw);
+        const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+        const classes = ['', 'filled-weak', 'filled-fair', 'filled-fair', 'filled-strong'];
+        bars.forEach((b, i) => {
+            b.className = 'strength-bar';
+            if (i < score) b.classList.add(classes[score]);
+        });
+        strLabel.textContent = labels[score] || '';
+        strLabel.style.color = score <= 1 ? '#C1684C' : score <= 2 ? '#B8956A' : '#6B7A5E';
+    }
+
+    function validate() {
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value);
+        const pwOk = passwordEl.value.length >= 8;
+        const matchOk = confirmEl.value === passwordEl.value && confirmEl.value !== '';
+        const termsOk = termsEl.checked;
+        submitBtn.disabled = !(emailOk && pwOk && matchOk && termsOk);
+    }
+
+    emailEl.addEventListener('blur', () => {
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value);
+        const err = document.getElementById('email-error');
+        if (emailEl.value) err.classList.toggle('visible', !ok);
+    });
+    emailEl.addEventListener('input', () => {
+        document.getElementById('email-error').classList.remove('visible');
+        validate();
+    });
+
+    passwordEl.addEventListener('input', () => {
+        updateStrength(passwordEl.value);
+        document.getElementById('password-error').classList.remove('visible');
+        validate();
+    });
+    passwordEl.addEventListener('blur', () => {
+        if (passwordEl.value && passwordEl.value.length < 8)
+            document.getElementById('password-error').classList.add('visible');
+    });
+
+    confirmEl.addEventListener('input', () => {
+        document.getElementById('confirm-error').classList.remove('visible');
+        validate();
+    });
+    confirmEl.addEventListener('blur', () => {
+        if (confirmEl.value && confirmEl.value !== passwordEl.value)
+            document.getElementById('confirm-error').classList.add('visible');
+    });
+
+    termsEl.addEventListener('change', validate);
+
+    document.querySelectorAll('.toggle-pw').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = document.getElementById(btn.dataset.target);
+            const isHidden = target.type === 'password';
+            target.type = isHidden ? 'text' : 'password';
+            btn.querySelector('i').className = isHidden ? 'fa fa-eye' : 'fa fa-eye-slash';
+        });
+    });
+
+    submitBtn.addEventListener('click', () => {
+        submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Creating account...';
+        submitBtn.disabled = true;
+        setTimeout(() => {
+            submitBtn.innerHTML = '<i class="fa fa-check"></i> Account Created!';
+            submitBtn.style.background = '#6B7A5E';
+        }, 1800);
+    });
+</script>
+{% endblock content %}
+
+
+{% block footer %}
+{% endblock footer %}
+
+{% block base_script %}
+{% endblock base_script %}

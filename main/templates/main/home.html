@@ -1,0 +1,337 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<!-- ====== HERO ====== -->
+<section class="hero">
+    <div class="hero-left">
+        <div class="hero-eyebrow">Nepal's Finest Photography Network</div>
+
+        <h1 class="hero-title">
+            Every Moment <em>Deserves</em><br>
+            a Perfect Frame
+        </h1>
+
+        <p class="hero-subtitle">
+            Connect with talented photographers across Nepal for weddings, portraits, events, and beyond. Find your
+            ideal photographer, compare portfolios, and book in minutes.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#" class="btn-primary">Find a Photographer</a>
+            <a href="#" class="btn-secondary">
+                <i class="fa fa-play-circle"></i> See How It Works
+            </a>
+        </div>
+
+        <div class="hero-stats">
+            <div>
+                <div class="stat-num">2,400+</div>
+                <div class="stat-label">Photographers</div>
+            </div>
+            <div>
+                <div class="stat-num">18K</div>
+                <div class="stat-label">Happy Clients</div>
+            </div>
+            <div>
+                <div class="stat-num">4.9★</div>
+                <div class="stat-label">Avg. Rating</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-right">
+        <div class="hero-img-grid">
+            <div class="hero-img-cell">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80"
+                    alt="Wedding photography" />
+            </div>
+            <div class="hero-img-cell">
+                <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=600&q=80"
+                    alt="Portrait photography" />
+            </div>
+            <div class="hero-img-cell">
+                <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=600&q=80"
+                    alt="Event photography" />
+            </div>
+        </div>
+
+        <div class="hero-overlay">
+            <div class="hero-overlay-icon">
+                <i class="fa fa-check"></i>
+            </div>
+            <div class="hero-overlay-text">
+                <strong>Instant Confirmation</strong>
+                Booking guaranteed in under 2 hrs
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== TRUST BANNER ====== -->
+<div class="trust-banner">
+    <div class="trust-inner">
+        <div class="trust-item">
+            <i class="fa fa-shield trust-icon"></i>
+            <div class="trust-text">
+                <strong>Verified Professionals</strong>
+                <span>Every photographer is background-checked</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <i class="fa fa-lock trust-icon"></i>
+            <div class="trust-text">
+                <strong>Secure Payments</strong>
+                <span>100% safe escrow transactions</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <i class="fa fa-refresh trust-icon"></i>
+            <div class="trust-text">
+                <strong>Free Cancellation</strong>
+                <span>Up to 48 hours before your shoot</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <i class="fa fa-headphones trust-icon"></i>
+            <div class="trust-text">
+                <strong>24/7 Support</strong>
+                <span>Always here when you need us</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== OFFERS / CATEGORIES ====== -->
+<section class="offers-section">
+    <div class="offers-inner">
+        <div class="offers-header">
+            <div>
+                <div class="section-tag">Photography Specialties</div>
+                <h2 class="section-title">Explore What <em>We Offer</em></h2>
+            </div>
+            <a href="#" class="offers-view-all">View All Categories <i class="fa fa-arrow-right"></i></a>
+        </div>
+
+        <div class="offers-grid">
+            <a href="#" class="offer-card">
+                <div class="offer-icon"><i class="fa fa-heart"></i></div>
+                <div class="offer-name">Weddings</div>
+                <div class="offer-count">420 photographers</div>
+            </a>
+            <a href="#" class="offer-card">
+                <div class="offer-icon"><i class="fa fa-user"></i></div>
+                <div class="offer-name">Portraits & Family</div>
+                <div class="offer-count">310 photographers</div>
+            </a>
+            <a href="#" class="offer-card">
+                <div class="offer-icon"><i class="fa fa-building"></i></div>
+                <div class="offer-name">Corporate & Events</div>
+                <div class="offer-count">185 photographers</div>
+            </a>
+            <a href="#" class="offer-card">
+                <div class="offer-icon"><i class="fa fa-shopping-bag"></i></div>
+                <div class="offer-name">Product & Commercial</div>
+                <div class="offer-count">240 photographers</div>
+            </a>
+            <a href="#" class="offer-card">
+                <div class="offer-icon"><i class="fa fa-globe"></i></div>
+                <div class="offer-name">Travel & Lifestyle</div>
+                <div class="offer-count">198 photographers</div>
+            </a>
+            <a href="#" class="offer-card">
+                <div class="offer-icon"><i class="fa fa-graduation-cap"></i></div>
+                <div class="offer-name">Graduation & Milestones</div>
+                <div class="offer-count">153 photographers</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ====== PHOTOGRAPHER LISTINGS ====== -->
+<section class="listings-section">
+    <div class="listings-inner">
+        <div class="listings-header">
+            <div>
+                <div class="section-tag">Top Rated Talent</div>
+                <h2 class="section-title">Featured <em>Photographers</em></h2>
+            </div>
+            <a href="#" class="offers-view-all" style="color:#7A5C3E; border-color:rgba(122,92,62,0.3);">
+                Browse All <i class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="listings-filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Weddings</button>
+            <button class="filter-btn">Portraits</button>
+            <button class="filter-btn">Corporate</button>
+            <button class="filter-btn">Commercial</button>
+            <button class="filter-btn">Travel</button>
+            <button class="filter-btn">Graduation</button>
+        </div>
+
+        <div class="photographers-grid">
+
+            <!-- Card 1 -->
+            <div class="photographer-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80"
+                        alt="Photographer Aarav Shrestha" />
+                    <div class="card-badge">Top Rated</div>
+                    <div class="card-fav"><i class="fa fa-heart-o"></i></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <div class="card-name">Aarav Shrestha</div>
+                        <div class="card-rating"><i class="fa fa-star"></i> 4.9 <span
+                                style="color:#B8956A;">(128)</span></div>
+                    </div>
+                    <div class="card-location"><i class="fa fa-map-marker"></i> Kathmandu, Nepal</div>
+                    <div class="card-tags">
+                        <span class="card-tag">Weddings</span>
+                        <span class="card-tag">Portraits</span>
+                        <span class="card-tag">Lifestyle</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">NPR 15,000 <span>/ half day</span></div>
+                        <button class="card-book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="photographer-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600&q=80"
+                        alt="Photographer Priya Tamang" />
+                    <div class="card-badge">New Talent</div>
+                    <div class="card-fav"><i class="fa fa-heart-o"></i></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <div class="card-name">Priya Tamang</div>
+                        <div class="card-rating"><i class="fa fa-star"></i> 4.8 <span style="color:#B8956A;">(54)</span>
+                        </div>
+                    </div>
+                    <div class="card-location"><i class="fa fa-map-marker"></i> Pokhara, Nepal</div>
+                    <div class="card-tags">
+                        <span class="card-tag">Portraits</span>
+                        <span class="card-tag">Graduation</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">NPR 8,000 <span>/ half day</span></div>
+                        <button class="card-book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="photographer-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80"
+                        alt="Photographer Rohan KC" />
+                    <div class="card-badge">Pro</div>
+                    <div class="card-fav"><i class="fa fa-heart-o"></i></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <div class="card-name">Rohan KC</div>
+                        <div class="card-rating"><i class="fa fa-star"></i> 5.0 <span
+                                style="color:#B8956A;">(203)</span></div>
+                    </div>
+                    <div class="card-location"><i class="fa fa-map-marker"></i> Lalitpur, Nepal</div>
+                    <div class="card-tags">
+                        <span class="card-tag">Commercial</span>
+                        <span class="card-tag">Corporate</span>
+                        <span class="card-tag">Events</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">NPR 25,000 <span>/ half day</span></div>
+                        <button class="card-book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="photographer-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1537110816-c0c1aeaad0db?w=600&q=80"
+                        alt="Photographer Sita Gurung" />
+                    <div class="card-fav"><i class="fa fa-heart-o"></i></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <div class="card-name">Sita Gurung</div>
+                        <div class="card-rating"><i class="fa fa-star"></i> 4.7 <span style="color:#B8956A;">(89)</span>
+                        </div>
+                    </div>
+                    <div class="card-location"><i class="fa fa-map-marker"></i> Bhaktapur, Nepal</div>
+                    <div class="card-tags">
+                        <span class="card-tag">Weddings</span>
+                        <span class="card-tag">Travel</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">NPR 12,000 <span>/ half day</span></div>
+                        <button class="card-book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="photographer-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80"
+                        alt="Photographer Niraj Bajracharya" />
+                    <div class="card-badge">Top Rated</div>
+                    <div class="card-fav"><i class="fa fa-heart-o"></i></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <div class="card-name">Niraj Bajracharya</div>
+                        <div class="card-rating"><i class="fa fa-star"></i> 4.9 <span
+                                style="color:#B8956A;">(176)</span></div>
+                    </div>
+                    <div class="card-location"><i class="fa fa-map-marker"></i> Kathmandu, Nepal</div>
+                    <div class="card-tags">
+                        <span class="card-tag">Corporate</span>
+                        <span class="card-tag">Events</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">NPR 18,000 <span>/ half day</span></div>
+                        <button class="card-book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="photographer-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1617575521317-d2974f3b56d2?w=600&q=80"
+                        alt="Photographer Maya Lama" />
+                    <div class="card-badge">New Talent</div>
+                    <div class="card-fav"><i class="fa fa-heart-o"></i></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <div class="card-name">Maya Lama</div>
+                        <div class="card-rating"><i class="fa fa-star"></i> 4.6 <span style="color:#B8956A;">(31)</span>
+                        </div>
+                    </div>
+                    <div class="card-location"><i class="fa fa-map-marker"></i> Pokhara, Nepal</div>
+                    <div class="card-tags">
+                        <span class="card-tag">Portraits</span>
+                        <span class="card-tag">Graduation</span>
+                        <span class="card-tag">Family</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-price">NPR 7,500 <span>/ half day</span></div>
+                        <button class="card-book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

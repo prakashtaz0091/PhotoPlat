@@ -969,6 +969,7 @@
 
 <body>
 
+
     {% block navbar %}
     <!-- ====== NAVBAR ====== -->
     <nav id="navbar">
@@ -979,12 +980,46 @@
                 <a href="#">How It Works</a>
                 <a href="#">Pricing</a>
                 <a href="#">Blog</a>
-                <a href="#">For Photographers</a>
+                <a href="{% url 'register_page' %}">For Photographers</a>
                 <a href="#" class="nav-cta">Book Now</a>
             </div>
         </div>
     </nav>
     {% endblock navbar %}
+
+    {% block toast_messages %}
+    <div class="toast-container" id="toast-container" role="region" aria-live="polite" aria-label="Notifications">
+
+
+        <!-- Django messages — rendered server-side. -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="toast toast-{{ message.tags }}" role="alert" data-duration="5000">
+            <div class="toast-icon-wrap">
+                {% if message.tags == 'success' %}<i class="fa fa-check"></i>
+                {% elif message.tags == 'error' %}<i class="fa fa-times"></i>
+                {% elif message.tags == 'warning' %}<i class="fa fa-exclamation"></i>
+                {% else %}<i class="fa fa-info"></i>{% endif %}
+            </div>
+            <div class="toast-body">
+                <div class="toast-title">
+                    {% if message.tags == 'success' %}Success
+                    {% elif message.tags == 'error' %}Error
+                    {% elif message.tags == 'warning' %}Warning
+                    {% else %}Notice{% endif %}
+                </div>
+                <div class="toast-message">{{ message }}</div>
+            </div>
+            <button class="toast-dismiss" aria-label="Dismiss"><i class="fa fa-times"></i></button>
+            <div class="toast-progress" style="animation-duration: 5000ms;"></div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
+    </div>
+    {% endblock toast_messages %}
+
 
     {% block content %}
     {% endblock content %}

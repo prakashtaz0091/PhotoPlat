@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +36,8 @@
             }
         }
     </script>
+
+    <link rel="stylesheet" href="{% static 'main/css/toast.css' %}">
 
     {% block base_css %}
     <style>
@@ -1115,6 +1118,10 @@
         });
     </script>
     {% endblock base_script %}
+
+    {% block toast_script %}
+    <script src="{% static 'main/js/toast.js' %}"></script>
+    {% endblock toast_script %}
 
     {% block extra_script %}
     {% endblock extra_script %}

@@ -1,7 +1,33 @@
 from django.shortcuts import render, redirect
 from .admin import UserCreationForm
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
+
+def logout_view(request):
+    logout(request)
+    return redirect("login_page")
+
+def login_view(request):
+    
+    if request.method == "POST":
+        print(request.POST)
+        user = authenticate(request,
+                            email=request.POST.get("email"),
+                            password=request.POST.get("password")
+                            )
+        if user is not None:
+            # actual user handling
+            login(request, user)
+            messages.success(request, "Login successful.")
+            return redirect("home_page")
+        else:
+            # user doesn't exist handling
+            messages.error(request, "User with these credentials doesn't exist")
+            return redirect("login_page")
+    
+    return render(request, "accounts/login.html")
+    
 def register(request):
     # If post request, post request in this view means, user is trying to submit registeration form
     if request.method == "POST":

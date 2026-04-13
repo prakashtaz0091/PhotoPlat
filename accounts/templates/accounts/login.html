@@ -1,0 +1,741 @@
+{% extends 'main/base.html' %}
+
+{% block base_css %}
+{% endblock base_css %}
+
+{% block extra_head %}
+<style>
+    :root {
+        --cream: #F5F0E8;
+        --parchment: #EDE5D4;
+        --sand: #D9CABA;
+        --terracotta: #C1684C;
+        --terracotta-light: rgba(193, 104, 76, 0.12);
+        --espresso: #3B2B1F;
+        --deep-espresso: #2A1E15;
+        --bark: #7A5C3E;
+        --clay: #B8956A;
+        --clay-border: rgba(184, 149, 106, 0.2);
+        --moss: #6B7A5E;
+        --sage: #9DAF8E;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Jost', sans-serif;
+        background-color: var(--cream);
+        color: var(--espresso);
+        min-height: 100vh;
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.03;
+        pointer-events: none;
+        z-index: 999;
+    }
+
+    /* ─── LEFT PANEL ─── */
+    .left-panel {
+        width: 55%;
+        position: relative;
+        background: var(--deep-espresso);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 3.5rem;
+        overflow: hidden;
+    }
+
+    .left-panel-img {
+        position: absolute;
+        inset: 0;
+        background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80') center/cover no-repeat;
+        opacity: 0.35;
+    }
+
+    .left-panel-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top,
+                rgba(42, 30, 21, 0.96) 0%,
+                rgba(42, 30, 21, 0.5) 50%,
+                rgba(42, 30, 21, 0.15) 100%);
+    }
+
+    .left-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .brand-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: 'Jost', sans-serif;
+        font-weight: 500;
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--clay);
+        margin-bottom: 1.5rem;
+    }
+
+    .brand-tag::before {
+        content: '';
+        display: block;
+        width: 2rem;
+        height: 1.5px;
+        background: var(--terracotta);
+    }
+
+    .left-headline {
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 300;
+        font-size: clamp(2.4rem, 4vw, 3.5rem);
+        line-height: 1.12;
+        color: var(--cream);
+        margin-bottom: 1.25rem;
+    }
+
+    .left-headline em {
+        font-style: italic;
+        color: var(--clay);
+    }
+
+    .left-body {
+        font-size: 0.82rem;
+        font-weight: 300;
+        line-height: 1.75;
+        color: rgba(245, 240, 232, 0.55);
+        max-width: 26rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stats-row {
+        display: flex;
+        gap: 2.5rem;
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .stat-num {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.85rem;
+        font-weight: 500;
+        color: var(--cream);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--clay);
+    }
+
+    /* ─── RIGHT PANEL ─── */
+    .right-panel {
+        width: 45%;
+        background: var(--cream);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 4rem 3.5rem;
+        position: relative;
+    }
+
+    .right-panel::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 10%;
+        bottom: 10%;
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, var(--clay-border), transparent);
+    }
+
+    .form-wrapper {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    /* Logo */
+    .logo-lockup {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 3rem;
+    }
+
+    .logo-mark {
+        width: 36px;
+        height: 36px;
+        background: var(--terracotta);
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .logo-text {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--espresso);
+        letter-spacing: 0.02em;
+    }
+
+    .logo-text span {
+        color: var(--terracotta);
+    }
+
+    /* Heading */
+    .form-heading {
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 400;
+        font-size: 2rem;
+        color: var(--espresso);
+        line-height: 1.15;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-heading em {
+        font-style: italic;
+        color: var(--bark);
+    }
+
+    .form-subtext {
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: var(--bark);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.01em;
+    }
+
+    /* Section label */
+    .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--terracotta);
+        margin-bottom: 1.5rem;
+    }
+
+    .section-tag::before {
+        content: '';
+        display: block;
+        width: 1.5rem;
+        height: 1.5px;
+        background: var(--terracotta);
+    }
+
+    /* Fields */
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .field-wrap {
+        position: relative;
+    }
+
+    .field-label {
+        display: block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--bark);
+        margin-bottom: 0.55rem;
+    }
+
+    .field-input {
+        width: 100%;
+        background: var(--parchment);
+        border: 1px solid var(--clay-border);
+        border-radius: 2px;
+        padding: 0.85rem 1rem 0.85rem 2.75rem;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 300;
+        color: var(--espresso);
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .field-input::placeholder {
+        color: rgba(122, 92, 62, 0.45);
+    }
+
+    .field-input:focus {
+        border-color: rgba(193, 104, 76, 0.5);
+        background: var(--cream);
+        box-shadow: 0 0 0 3px rgba(193, 104, 76, 0.07);
+    }
+
+    .field-icon {
+        position: absolute;
+        bottom: 0.85rem;
+        left: 0.95rem;
+        color: var(--clay);
+        font-size: 0.85rem;
+        pointer-events: none;
+    }
+
+    .field-eye {
+        position: absolute;
+        bottom: 0.85rem;
+        right: 0.95rem;
+        color: var(--clay);
+        font-size: 0.85rem;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.2s;
+    }
+
+    .field-eye:hover {
+        opacity: 1;
+    }
+
+    /* Row: remember + forgot */
+    .remember-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+
+    /* Custom checkbox */
+    .checkbox-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .checkbox-wrap input[type="checkbox"] {
+        display: none;
+    }
+
+    .checkbox-box {
+        width: 16px;
+        height: 16px;
+        border: 1px solid var(--clay-border);
+        border-radius: 2px;
+        background: var(--parchment);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.18s, border-color 0.18s;
+        flex-shrink: 0;
+    }
+
+    .checkbox-wrap input:checked~.checkbox-box {
+        background: var(--terracotta);
+        border-color: var(--terracotta);
+    }
+
+    .checkbox-tick {
+        color: white;
+        font-size: 0.5rem;
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+
+    .checkbox-wrap input:checked~.checkbox-box .checkbox-tick {
+        opacity: 1;
+    }
+
+    .checkbox-label {
+        font-size: 0.78rem;
+        font-weight: 300;
+        color: var(--bark);
+    }
+
+    .forgot-link {
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: var(--terracotta);
+        text-decoration: none;
+        letter-spacing: 0.02em;
+        transition: opacity 0.18s;
+    }
+
+    .forgot-link:hover {
+        opacity: 0.7;
+        text-decoration: underline;
+    }
+
+    /* CTA Button */
+    .btn-primary {
+        width: 100%;
+        background: var(--terracotta);
+        color: white;
+        border: none;
+        border-radius: 2px;
+        padding: 0.95rem 1.5rem;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary:hover {
+        background: #a8573d;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(193, 104, 76, 0.28);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+
+    /* Divider */
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .divider-line {
+        flex: 1;
+        height: 1px;
+        background: var(--clay-border);
+    }
+
+    .divider-text {
+        font-size: 0.7rem;
+        font-weight: 300;
+        color: var(--clay);
+        letter-spacing: 0.08em;
+        white-space: nowrap;
+    }
+
+    /* Social buttons */
+    .social-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-social {
+        border: 1px solid var(--clay-border);
+        border-radius: 2px;
+        background: var(--parchment);
+        padding: 0.7rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--espresso);
+        cursor: pointer;
+        transition: background 0.18s, border-color 0.18s, transform 0.15s;
+    }
+
+    .btn-social:hover {
+        background: var(--sand);
+        border-color: rgba(184, 149, 106, 0.4);
+        transform: translateY(-1px);
+    }
+
+    .btn-social .fa {
+        font-size: 0.9rem;
+    }
+
+    /* Sign up link */
+    .signup-line {
+        text-align: center;
+        font-size: 0.78rem;
+        font-weight: 300;
+        color: var(--bark);
+    }
+
+    .signup-line a {
+        color: var(--terracotta);
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.18s;
+    }
+
+    .signup-line a:hover {
+        opacity: 0.7;
+        text-decoration: underline;
+    }
+
+    /* Entrance animation */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-wrapper>* {
+        animation: fadeUp 0.55s ease both;
+    }
+
+    .form-wrapper>*:nth-child(1) {
+        animation-delay: 0.05s;
+    }
+
+    .form-wrapper>*:nth-child(2) {
+        animation-delay: 0.12s;
+    }
+
+    .form-wrapper>*:nth-child(3) {
+        animation-delay: 0.18s;
+    }
+
+    .form-wrapper>*:nth-child(4) {
+        animation-delay: 0.24s;
+    }
+
+    .form-wrapper>*:nth-child(5) {
+        animation-delay: 0.30s;
+    }
+
+    .form-wrapper>*:nth-child(6) {
+        animation-delay: 0.36s;
+    }
+
+    .form-wrapper>*:nth-child(7) {
+        animation-delay: 0.42s;
+    }
+
+    .form-wrapper>*:nth-child(8) {
+        animation-delay: 0.48s;
+    }
+
+    .form-wrapper>*:nth-child(9) {
+        animation-delay: 0.54s;
+    }
+
+    @keyframes panelSlide {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .left-content {
+        animation: panelSlide 0.7s ease both 0.1s;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        body {
+            flex-direction: column;
+            overflow: auto;
+        }
+
+        .left-panel {
+            display: none;
+        }
+
+        .right-panel {
+            width: 100%;
+            padding: 3rem 2rem;
+            min-height: 100vh;
+        }
+
+        .right-panel::before {
+            display: none;
+        }
+    }
+</style>
+{% endblock extra_head %}
+
+{% block navbar %}
+{% endblock navbar %}
+
+{% block content %}
+<!-- ─── LEFT: Hero Panel ─── -->
+<div class="left-panel">
+    <div class="left-panel-img"></div>
+    <div class="left-panel-overlay"></div>
+
+    <div class="left-content">
+        <div class="brand-tag">Nepal's Creative Directory</div>
+
+        <h1 class="left-headline">
+            Where <em>moments</em><br>
+            find their<br>
+            storytellers.
+        </h1>
+
+        <p class="left-body">
+            Discover and book Nepal's finest photographers — from the peaks of the Himalayas to the festivals of
+            Kathmandu valley.
+        </p>
+
+        <div class="stats-row">
+            <div class="stat">
+                <span class="stat-num">840+</span>
+                <span class="stat-label">Photographers</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">12K</span>
+                <span class="stat-label">Sessions Booked</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">75</span>
+                <span class="stat-label">Districts Covered</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── RIGHT: Login Form ─── -->
+<div class="right-panel">
+    <form class="form-wrapper" method="post" action="{% url 'login_page' %}">
+        {% csrf_token %}
+        <!-- Logo -->
+        <div class="logo-lockup">
+            <div class="logo-mark">
+                <i class="fa fa-camera"></i>
+            </div>
+            <div class="logo-text">Photo<span>Plat</span></div>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="form-heading">Welcome <em>back</em></h2>
+        <p class="form-subtext">Sign in to continue to your account</p>
+
+        <!-- Tag -->
+        <div class="section-tag">Credentials</div>
+
+        <!-- Fields -->
+        <div class="field-group">
+            <div class="field-wrap">
+                <label class="field-label" for="email">Email Address</label>
+                <div style="position:relative;">
+                    <i class="fa fa-envelope-o field-icon"></i>
+                    <input class="field-input" id="email" type="email" placeholder="you@example.com"
+                        autocomplete="email" name="email" />
+                </div>
+            </div>
+
+            <div class="field-wrap">
+                <label class="field-label" for="password">Password</label>
+                <div style="position:relative;">
+                    <i class="fa fa-lock field-icon"></i>
+                    <input class="field-input" id="password" type="password" placeholder="Enter your password"
+                        autocomplete="current-password" name="password" />
+                    <i class="fa fa-eye field-eye" id="togglePwd" title="Show/hide password"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remember + Forgot -->
+        <div class="remember-row">
+            <label class="checkbox-wrap">
+                <input type="checkbox" id="remember" />
+                <div class="checkbox-box">
+                    <i class="fa fa-check checkbox-tick"></i>
+                </div>
+                <span class="checkbox-label">Remember me</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button class="btn-primary" type="submit">
+            Sign In
+            <i class="fa fa-arrow-right"></i>
+        </button>
+
+        <!-- Divider -->
+        <div class="divider">
+            <div class="divider-line"></div>
+            <span class="divider-text">or continue with</span>
+            <div class="divider-line"></div>
+        </div>
+
+        <!-- Social -->
+        <div class="social-row">
+            <button class="btn-social">
+                <i class="fa fa-google" style="color:#C1684C;"></i>
+                Google
+            </button>
+            <button class="btn-social">
+                <i class="fa fa-facebook" style="color:#3B5998;"></i>
+                Facebook
+            </button>
+        </div>
+
+        <!-- Sign up -->
+        <div class="signup-line">
+            New to PhotoPlat? <a href="{% url 'register_page' %}">Create an account</a>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // Toggle password visibility
+    const toggleBtn = document.getElementById('togglePwd');
+    const pwdInput = document.getElementById('password');
+
+    toggleBtn.addEventListener('click', () => {
+        const isHidden = pwdInput.type === 'password';
+        pwdInput.type = isHidden ? 'text' : 'password';
+        toggleBtn.classList.toggle('fa-eye', !isHidden);
+        toggleBtn.classList.toggle('fa-eye-slash', isHidden);
+    });
+</script>
+{% endblock content %}
+
+
+{% block footer %}
+{% endblock footer %}

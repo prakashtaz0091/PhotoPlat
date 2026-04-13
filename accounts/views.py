@@ -19,6 +19,10 @@ def login_view(request):
         if user is not None:
             # actual user handling
             login(request, user)
+            
+            if not request.POST.get("remember"):
+                request.session.set_expiry(0)
+                
             messages.success(request, "Login successful.")
             return redirect("home_page")
         else:

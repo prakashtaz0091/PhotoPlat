@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from .admin import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from .models import Profile
 
+
+def profile_view(request):
+    return render(request, "accounts/profile.html")
 
 def logout_view(request):
     logout(request)
@@ -24,7 +28,7 @@ def login_view(request):
                 request.session.set_expiry(0)
                 
             messages.success(request, "Login successful.")
-            return redirect("home_page")
+            return redirect("profile_page")
         else:
             # user doesn't exist handling
             messages.error(request, "User with these credentials doesn't exist")
@@ -39,7 +43,10 @@ def register(request):
         submitted_form = UserCreationForm(request.POST)
         
         if submitted_form.is_valid():
-            submitted_form.save()
+            registered_user = submitted_form.save()
+            Profile.objects.create(
+                user = registered_user
+            )
             messages.success(request, "Registration successful. Please login and complete the verification process")
         else:
             print("-----------No it's not valid")

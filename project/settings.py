@@ -124,3 +124,6 @@ AUTH_USER_MODEL = "accounts.MyUser"
 
 SESSION_COOKIE_AGE = 1_209_600 # 2 weeks, provide value in seconds
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = '/media/'

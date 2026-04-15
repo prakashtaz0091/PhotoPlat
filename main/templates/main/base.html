@@ -986,12 +986,10 @@
 
                 {% if not request.user.is_authenticated %}
                 <a href="{% url 'login_page' %}">For Photographers</a>
-                {% else %}
-                <a href="{% url 'logout_page' %}" class="nav-cta">Logout</a>
+                <a href="#" class="nav-cta">Book Now</a>
                 {% endif %}
 
 
-                <a href="#" class="nav-cta">Book Now</a>
             </div>
         </div>
     </nav>

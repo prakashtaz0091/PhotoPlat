@@ -1,0 +1,1175 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block extra_head %}
+<style>
+    :root {
+        --cream: #F5F0E8;
+        --parchment: #EDE5D4;
+        --sand: #D9CABA;
+        --terracotta: #C1684C;
+        --espresso: #3B2B1F;
+        --deep-espresso: #2A1E15;
+        --bark: #7A5C3E;
+        --clay: #B8956A;
+        --moss: #6B7A5E;
+        --sage: #9DAF8E;
+        --border: rgba(184, 149, 106, 0.2);
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Jost', sans-serif;
+        background-color: var(--cream);
+        color: var(--espresso);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+    }
+
+
+    /* Section tag */
+    .section-tag {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .section-tag::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--terracotta);
+        flex-shrink: 0;
+    }
+
+    .section-tag span {
+        font-family: 'Jost', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--terracotta);
+    }
+
+    /* Cards */
+    .card {
+        background: var(--parchment);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 2rem;
+        transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 32px rgba(59, 43, 31, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: var(--terracotta);
+        color: #fff;
+        border: none;
+        border-radius: 2px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 0.65rem 1.5rem;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .btn-primary:hover {
+        background: #a8553a;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: var(--espresso);
+        color: var(--cream);
+        border: none;
+        border-radius: 2px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 0.65rem 1.5rem;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-secondary:hover {
+        background: var(--deep-espresso);
+        transform: translateY(-1px);
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--terracotta);
+        border: 1px solid var(--terracotta);
+        border-radius: 2px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 0.65rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-outline:hover {
+        background: var(--terracotta);
+        color: #fff;
+    }
+
+    .btn-danger {
+        background: transparent;
+        color: #c0392b;
+        border: 1px solid rgba(192, 57, 43, 0.3);
+        border-radius: 2px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 0.65rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-danger:hover {
+        background: #c0392b;
+        color: #fff;
+    }
+
+    /* Status badges */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem 0.65rem;
+        border-radius: 2px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        /* text-transform: uppercase; */
+        letter-spacing: 0.1em;
+    }
+
+    .badge-verified {
+        background: rgba(107, 122, 94, 0.12);
+        color: var(--moss);
+        border: 1px solid rgba(107, 122, 94, 0.25);
+    }
+
+    .badge-pending {
+        background: rgba(193, 104, 76, 0.1);
+        color: var(--terracotta);
+        border: 1px solid rgba(193, 104, 76, 0.25);
+    }
+
+    .badge-unverified {
+        background: rgba(184, 149, 106, 0.1);
+        color: var(--clay);
+        border: 1px solid var(--border);
+    }
+
+    /* Profile avatar ring */
+    .avatar-ring {
+        width: 108px;
+        height: 108px;
+        border-radius: 2px;
+        border: 2px solid var(--terracotta);
+        padding: 3px;
+        background: var(--parchment);
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .avatar-ring img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 1px;
+    }
+
+    .avatar-edit {
+        position: absolute;
+        bottom: -8px;
+        right: -8px;
+        width: 26px;
+        height: 26px;
+        background: var(--terracotta);
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .avatar-edit:hover {
+        background: #a8553a;
+    }
+
+    .avatar-edit i {
+        color: #fff;
+        font-size: 10px;
+    }
+
+    /* Form inputs */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+        display: block;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--bark);
+        margin-bottom: 0.4rem;
+    }
+
+    .form-input {
+        width: 100%;
+        background: var(--cream);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 0.65rem 0.85rem;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.875rem;
+        font-weight: 400;
+        color: var(--espresso);
+        transition: border-color 0.2s;
+        outline: none;
+    }
+
+    .form-input:focus {
+        border-color: var(--terracotta);
+    }
+
+    .form-input::placeholder {
+        color: var(--clay);
+        opacity: 0.6;
+    }
+
+    /* Upload zone */
+    .upload-zone {
+        border: 1px dashed rgba(184, 149, 106, 0.45);
+        border-radius: 2px;
+        padding: 1.75rem 1rem;
+        text-align: center;
+        background: rgba(245, 240, 232, 0.6);
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        position: relative;
+    }
+
+    .upload-zone:hover {
+        border-color: var(--terracotta);
+        background: rgba(193, 104, 76, 0.04);
+    }
+
+    .upload-zone input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(193, 104, 76, 0.1);
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.6rem;
+    }
+
+    /* Divider */
+    .divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 1.75rem 0;
+    }
+
+    /* Heading styles */
+    h1,
+    h2,
+    h3 {
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+        height: 3px;
+        background: var(--sand);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: var(--terracotta);
+        border-radius: 2px;
+        transition: width 0.6s ease;
+    }
+
+    /* Modal */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: rgba(42, 30, 21, 0.7);
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-overlay.active {
+        display: flex;
+    }
+
+    .modal-box {
+        background: var(--parchment);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 2.5rem;
+        width: 90%;
+        max-width: 480px;
+        position: relative;
+        animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--bark);
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+        color: var(--espresso);
+    }
+
+    /* File preview */
+    .file-preview {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.65rem 0.85rem;
+        background: rgba(193, 104, 76, 0.07);
+        border: 1px solid rgba(193, 104, 76, 0.2);
+        border-radius: 2px;
+        margin-top: 0.5rem;
+    }
+
+    .file-preview i {
+        color: var(--terracotta);
+    }
+
+    /* Step indicator */
+    .kyc-step {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 0;
+    }
+
+    .step-num {
+        width: 24px;
+        height: 24px;
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.65rem;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    .step-num.done {
+        background: var(--moss);
+        color: #fff;
+    }
+
+    .step-num.active {
+        background: var(--terracotta);
+        color: #fff;
+    }
+
+    .step-num.idle {
+        background: var(--sand);
+        color: var(--bark);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--cream);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--sand);
+        border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--clay);
+    }
+
+    /* Main layout */
+    main {
+        padding-top: 68px;
+        min-height: 100vh;
+        background: var(--cream);
+    }
+
+    .profile-header {
+        background: var(--deep-espresso);
+        position: relative;
+        overflow: hidden;
+        padding: 5rem 2.5rem 3.5rem;
+    }
+
+    .profile-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 70% 50%, rgba(193, 104, 76, 0.18) 0%, transparent 65%);
+        pointer-events: none;
+    }
+
+    .profile-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(193, 104, 76, 0.25);
+    }
+
+    .header-tag span {
+        color: rgba(193, 104, 76, 0.9);
+    }
+
+    .header-tag::before {
+        background: rgba(193, 104, 76, 0.9);
+    }
+
+    .profile-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.8rem;
+        font-weight: 500;
+        color: var(--cream);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+    }
+
+    .profile-name em {
+        font-style: italic;
+        font-weight: 300;
+        color: rgba(245, 240, 232, 0.7);
+    }
+
+    .profile-meta {
+        font-family: 'Jost', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: rgba(184, 149, 106, 0.85);
+        letter-spacing: 0.05em;
+    }
+
+    .profile-avatar-lg {
+        width: 120px;
+        height: 120px;
+        border-radius: 2px;
+        border: 2px solid rgba(193, 104, 76, 0.5);
+        object-fit: cover;
+        position: relative;
+    }
+
+    .content-area {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem 6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    @media (max-width: 640px) {
+        .profile-name {
+            font-size: 2rem;
+        }
+
+        nav {
+            padding: 0 1.25rem;
+        }
+
+        .content-area {
+            padding: 2.5rem 1rem 4rem;
+        }
+    }
+</style>
+{% endblock extra_head %}
+
+
+{% block content %}
+<!-- PROFILE HEADER -->
+<div class="profile-header">
+    <div style="max-width:900px;margin:0 auto;">
+        <div class="section-tag header-tag" style="margin-bottom:1.5rem;"><span>Photographer Profile</span></div>
+        <div style="display:flex;align-items:flex-end;gap:2rem;flex-wrap:wrap;">
+            <!-- Profile Pic -->
+            <div style="position:relative;flex-shrink:0;">
+
+                {% if request.user.profile.profile_photo %}
+                <img src="{{ request.user.profile.profile_photo.url }}" alt="Profile" class="profile-avatar-lg"
+                    id="headerAvatarImg" />
+                {% else %}
+                <img src="{% static 'accounts/images/default-profile-pic.png' %}" alt="Profile"
+                    class="profile-avatar-lg" id="headerAvatarImg" />
+                {% endif %}
+                <div onclick="document.getElementById('avatarInput').click()"
+                    style="position:absolute;bottom:-10px;right:-10px;width:30px;height:30px;background:var(--terracotta);border-radius:2px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                    <i class="fa fa-camera" style="color:#fff;font-size:11px;"></i>
+                </div>
+                <input type="file" id="avatarInput" accept="image/*" style="display:none;"
+                    onchange="handleAvatarChange(event)" />
+            </div>
+
+            <div style="flex:1;min-width:0;">
+                <h1 class="profile-name"> {{request.user.profile.fullname|default:"No-Name-Added"}} </h1>
+                <p class="profile-meta" style="margin-top:0.4rem;">
+                    <i class="fa fa-map-marker" style="margin-right:0.3rem;color:var(--terracotta);"></i>
+                    {{request.user.profile.permanent_address|default:"No-address"}} &nbsp;·&nbsp;
+                    {{request.user.profile.speciality|default:"No-speciality"}}
+                </p>
+                <div style="display:flex;gap:0.6rem;margin-top:0.85rem;flex-wrap:wrap;" id="headerBadges">
+
+                    {% if request.user.profile.email_verified == "verified" %}
+                    <span class="badge badge-verified"><i class="fa fa-check-circle"></i> Email Verified</span>
+                    {% else %}
+                    <span class="badge badge-unverified"><i class="fa fa-times-circle"></i> Email Not
+                        Verified</span>
+                    {% endif %}
+
+                    {% if request.user.profile.kyc_verified == "verified" %}
+                    <span class="badge badge-verified" id="kycHeaderBadge"><i class="fa fa-clock-o"></i> KYC
+                        Pending</span>
+                    {% else %}
+                    <span class="badge badge-pending" id="kycHeaderBadge"><i class="fa fa-clock-o"></i> KYC
+                        {{request.user.profile.get_kyc_verified_display}} </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div style="margin-left:auto;">
+                <button class="btn-danger" onclick="showLogoutModal()">
+                    <i class="fa fa-sign-out"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Completion bar -->
+        <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(184,149,106,0.15);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                <span
+                    style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:rgba(184,149,106,0.7);">Profile
+                    Completeness</span>
+                <span style="font-size:0.75rem;font-weight:500;color:rgba(193,104,76,0.9);" id="completePct">65%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:65%;" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main>
+    <div class="content-area">
+
+        <!-- 1. PROFILE PICTURE CARD -->
+        <div class="card">
+            <div class="section-tag"><span>Profile Photo</span></div>
+            <h2 style="font-size:1.35rem;font-weight:500;color:var(--espresso);margin-bottom:0.25rem;">Your Public
+                Photo</h2>
+            <p style="font-size:0.82rem;color:var(--bark);margin-bottom:1.5rem;">Your profile photo appears on your
+                listing and booking confirmations. Use a clear, professional image.</p>
+
+            <div style="display:flex;align-items:center;gap:1.75rem;flex-wrap:wrap;">
+                <div class="avatar-ring">
+                    {% if request.user.profile.profile_photo %}
+                    <img src="{{ request.user.profile.profile_photo.url }}" alt="Profile" class="profile-avatar-lg"
+                        id="profileAvatarImg" />
+                    {% else %}
+                    <img src="{% static 'accounts/images/default-profile-pic.png' %}" alt="Profile"
+                        class="profile-avatar-lg" id="profileAvatarImg" />
+                    {% endif %}
+
+                    <div class="avatar-edit" onclick="document.getElementById('avatarInput').click()">
+                        <i class="fa fa-pencil"></i>
+                    </div>
+                </div>
+                <div>
+                    <p style="font-size:0.78rem;color:var(--bark);font-weight:500;margin-bottom:0.3rem;">Anisha
+                        Sharma</p>
+                    <p style="font-size:0.72rem;color:var(--clay);margin-bottom:1rem;">JPG, PNG or WEBP · Max 5MB ·
+                        Minimum 400×400px</p>
+                    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+                        <button class="btn-primary" onclick="document.getElementById('avatarInput').click()">
+                            <i class="fa fa-upload"></i> Upload Photo
+                        </button>
+                        <button class="btn-outline" onclick="removeAvatar()">
+                            <i class="fa fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. EMAIL VERIFICATION CARD -->
+        <div class="card" id="emailCard">
+            <div class="section-tag"><span>Email Verification</span></div>
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+                <div style="flex:1;min-width:0;">
+                    <h2 style="font-size:1.35rem;font-weight:500;color:var(--espresso);margin-bottom:0.25rem;">Email
+                        Address</h2>
+                    <p style="font-size:0.82rem;color:var(--bark);margin-bottom:1rem;">Verified email is required to
+                        receive booking requests and notifications.</p>
+
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+                        <span
+                            style="font-size:0.9rem;font-weight:500;color:var(--espresso);">{{request.user.email}}</span>
+
+                        {% if request.user.profile.email_verified == "verified" %}
+                        <span class="badge badge-verified" id="emailBadge"><i class="fa fa-check-circle"></i>
+                            Verified</span>
+                        {% else %}
+                        <span class="badge badge-pending" id="emailBadge"><i class="fa fa-times-circle"></i>
+                            Not Verified</span>
+                        {% endif %}
+                    </div>
+
+                    {% if request.user.profile.email_verified == "verified" %}
+                    <div id="emailVerifiedState">
+                        <div
+                            style="display:flex;align-items:center;gap:0.6rem;padding:0.85rem;background:rgba(107,122,94,0.08);border:1px solid rgba(107,122,94,0.2);border-radius:2px;">
+                            <i class="fa fa-check-circle" style="color:var(--moss);font-size:1rem;"></i>
+                            <div>
+                                <p style="font-size:0.78rem;font-weight:600;color:var(--moss);">Your email is
+                                    verified</p>
+                                <p style="font-size:0.72rem;color:var(--bark);margin-top:0.1rem;">Verified on 3
+                                    March 2025 · All notifications active
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div id="emailUnverifiedState">
+                        <div
+                            style="display:flex;align-items:center;gap:0.6rem;padding:0.85rem;background:rgba(193,104,76,0.07);border:1px solid rgba(193,104,76,0.2);border-radius:2px;margin-bottom:1rem;">
+                            <i class="fa fa-exclamation-circle" style="color:var(--terracotta);font-size:1rem;"></i>
+                            <div>
+                                <p style="font-size:0.78rem;font-weight:600;color:var(--terracotta);">Email not
+                                    verified</p>
+                                <p style="font-size:0.72rem;color:var(--bark);margin-top:0.1rem;">You won't receive
+                                    booking notifications until your email is verified.</p>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="sendVerificationEmail()">
+                            <i class="fa fa-envelope"></i> Send Verification Link
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. KYC VERIFICATION CARD -->
+        <div class="card" id="kycCard">
+            <div class="section-tag"><span>Identity Verification — KYC</span></div>
+            <h2 style="font-size:1.35rem;font-weight:500;color:var(--espresso);margin-bottom:0.25rem;">List yourself as
+                verified photographer</h2>
+            <p style="font-size:0.82rem;color:var(--bark);margin-bottom:0.5rem;">Complete identity verification to
+                build trust with clients on PhotoPlat.</p>
+
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.75rem;flex-wrap:wrap;">
+                {% if request.user.profile.kyc_verified == "verified" %}
+                <span class="badge badge-verified" id="kycStatusBadge"><i class="fa fa-check-circle"></i>
+                    Verified</span>
+                {% else %}
+                <span class="badge badge-pending" id="kycStatusBadge"><i class="fa fa-clock-o"></i>
+                    {{request.user.profile.get_kyc_verified_display}} </span>
+
+                {% if request.user.profile.kyc_verified == "in_review" %}
+                <span style="font-size:0.7rem;color:var(--clay);">— Documents under review (1–3 business
+                    days)</span>
+
+                {% endif %}
+                {% endif %}
+            </div>
+
+            <!-- KYC Steps summary -->
+            <div
+                style="background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:1rem 1.25rem;margin-bottom:1.75rem;">
+                <p
+                    style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--bark);margin-bottom:0.75rem;">
+                    Verification Steps</p>
+                <div class="kyc-step">
+                    <div class="step-num done"><i class="fa fa-check" style="font-size:9px;"></i></div>
+                    <div>
+                        <p style="font-size:0.8rem;font-weight:500;color:var(--espresso);">Personal Information</p>
+                        <p style="font-size:0.7rem;color:var(--clay);">Full name, date of birth, address</p>
+                    </div>
+                </div>
+                <div style="border-top:1px solid var(--border);"></div>
+                <div class="kyc-step">
+                    <div class="step-num active" id="step2Num">2</div>
+                    <div>
+                        <p style="font-size:0.8rem;font-weight:500;color:var(--espresso);">Citizenship Document</p>
+                        <p style="font-size:0.7rem;color:var(--clay);">Front and back of Nepali citizenship card</p>
+                    </div>
+                </div>
+                <div style="border-top:1px solid var(--border);"></div>
+                <div class="kyc-step">
+                    <div class="step-num idle" id="step3Num">3</div>
+                    <div>
+                        <p style="font-size:0.8rem;font-weight:500;color:var(--espresso);">Review & Approval</p>
+                        <p style="font-size:0.7rem;color:var(--clay);">PhotoPlat team verifies within 3 business
+                            days</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KYC Form -->
+            <div id="kycFormSection">
+                <hr class="divider" />
+                <p
+                    style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--bark);margin-bottom:1.25rem;">
+                    Personal Information</p>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Full Name (as per citizenship)</label>
+                        <input type="text" class="form-input" placeholder="Anisha Sharma" value="Anisha Sharma" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-input" value="1995-06-14" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Citizenship Number</label>
+                        <input type="text" class="form-input" placeholder="e.g. 23-01-75-12345" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Issued District</label>
+                        <input type="text" class="form-input" placeholder="e.g. Kathmandu" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Permanent Address</label>
+                    <input type="text" class="form-input"
+                        placeholder="Ward No., VDC/Municipality, District, Province" />
+                </div>
+
+                <hr class="divider" />
+
+                <!-- Citizenship Front -->
+                <p
+                    style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--bark);margin-bottom:1.25rem;">
+                    Citizenship Document Upload</p>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+                    <div>
+                        <label class="form-label" style="margin-bottom:0.6rem;">
+                            <i class="fa fa-id-card" style="margin-right:0.3rem;color:var(--terracotta);"></i>
+                            Citizenship — Front Side
+                        </label>
+                        <div class="upload-zone" id="frontZone" onclick="void(0)">
+                            <input type="file" accept="image/*,.pdf" onchange="handleFileUpload(event,'front')" />
+                            <div class="upload-icon">
+                                <i class="fa fa-camera" style="color:var(--terracotta);font-size:14px;"></i>
+                            </div>
+                            <p style="font-size:0.78rem;font-weight:500;color:var(--espresso);margin-bottom:0.2rem;">
+                                Upload Front Side</p>
+                            <p style="font-size:0.68rem;color:var(--clay);">JPG, PNG or PDF · Max 10MB</p>
+                        </div>
+                        <div id="frontPreview" style="display:none;" class="file-preview">
+                            <i class="fa fa-file-image-o"></i>
+                            <div style="flex:1;min-width:0;">
+                                <p style="font-size:0.75rem;font-weight:500;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+                                    id="frontFileName">citizenship_front.jpg</p>
+                                <p style="font-size:0.65rem;color:var(--clay);" id="frontFileSize">2.1 MB</p>
+                            </div>
+                            <button onclick="removeFile('front')"
+                                style="background:none;border:none;cursor:pointer;color:var(--clay);font-size:12px;">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Citizenship Back -->
+                    <div>
+                        <label class="form-label" style="margin-bottom:0.6rem;">
+                            <i class="fa fa-id-card" style="margin-right:0.3rem;color:var(--bark);"></i>
+                            Citizenship — Back Side
+                        </label>
+                        <div class="upload-zone" id="backZone">
+                            <input type="file" accept="image/*,.pdf" onchange="handleFileUpload(event,'back')" />
+                            <div class="upload-icon">
+                                <i class="fa fa-camera" style="color:var(--terracotta);font-size:14px;"></i>
+                            </div>
+                            <p style="font-size:0.78rem;font-weight:500;color:var(--espresso);margin-bottom:0.2rem;">
+                                Upload Back Side</p>
+                            <p style="font-size:0.68rem;color:var(--clay);">JPG, PNG or PDF · Max 10MB</p>
+                        </div>
+                        <div id="backPreview" style="display:none;" class="file-preview">
+                            <i class="fa fa-file-image-o"></i>
+                            <div style="flex:1;min-width:0;">
+                                <p style="font-size:0.75rem;font-weight:500;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+                                    id="backFileName">citizenship_back.jpg</p>
+                                <p style="font-size:0.65rem;color:var(--clay);" id="backFileSize">1.8 MB</p>
+                            </div>
+                            <button onclick="removeFile('back')"
+                                style="background:none;border:none;cursor:pointer;color:var(--clay);font-size:12px;">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guidelines -->
+                <div
+                    style="background:rgba(107,122,94,0.07);border:1px solid rgba(107,122,94,0.18);border-radius:2px;padding:0.9rem 1rem;margin-bottom:1.5rem;">
+                    <p
+                        style="font-size:0.7rem;font-weight:600;color:var(--moss);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.08em;">
+                        Upload Guidelines</p>
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:0.3rem;">
+                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Document must be
+                            clear, all four corners visible
+                        </li>
+                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> No blur, glare, or
+                            shadows covering text
+                        </li>
+                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Original document
+                            only — no photocopies
+                        </li>
+                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Your data is
+                            encrypted and stored securely
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Consent -->
+                <label style="display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;margin-bottom:1.5rem;">
+                    <input type="checkbox" id="consentCheck"
+                        style="margin-top:2px;accent-color:var(--terracotta);cursor:pointer;" />
+                    <span style="font-size:0.75rem;color:var(--bark);line-height:1.5;">
+                        I confirm that the documents submitted belong to me and that all information provided is
+                        accurate. I consent to PhotoPlat processing my personal data for identity verification
+                        purposes as per the <a href="#" style="color:var(--terracotta);text-decoration:none;">Privacy
+                            Policy</a>.
+                    </span>
+                </label>
+
+                <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                    <button class="btn-primary" onclick="submitKYC()">
+                        <i class="fa fa-shield"></i> Submit for Verification
+                    </button>
+                    <button class="btn-outline" onclick="saveDraft()">
+                        <i class="fa fa-floppy-o"></i> Save Draft
+                    </button>
+                </div>
+            </div>
+
+            <!-- KYC Submitted State (hidden by default) -->
+            <div id="kycSubmittedSection" style="display:none;">
+                <div
+                    style="display:flex;align-items:center;gap:1rem;padding:1.25rem;background:rgba(107,122,94,0.08);border:1px solid rgba(107,122,94,0.2);border-radius:2px;">
+                    <div
+                        style="width:44px;height:44px;background:var(--moss);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fa fa-shield" style="color:#fff;font-size:1.1rem;"></i>
+                    </div>
+                    <div>
+                        <p style="font-size:0.85rem;font-weight:600;color:var(--moss);">KYC Documents Submitted</p>
+                        <p style="font-size:0.72rem;color:var(--bark);margin-top:0.15rem;">Your documents are under
+                            review. Verification typically takes 1–3 business days. You'll be notified via email.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGOUT CARD -->
+        <div class="card" style="background:var(--deep-espresso);border-color:rgba(193,104,76,0.15);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+                <div>
+                    <div class="section-tag header-tag"><span>Session</span></div>
+                    <h2 style="font-size:1.2rem;font-weight:500;color:var(--cream);margin-bottom:0.25rem;">Sign Out
+                    </h2>
+                    <p style="font-size:0.8rem;color:rgba(184,149,106,0.75);">End your current session. You'll need
+                        to sign in again to access your account.</p>
+                </div>
+                <button class="btn-danger" onclick="showLogoutModal()"
+                    style="border-color:rgba(192,57,43,0.4);color:#e07070;">
+                    <i class="fa fa-sign-out"></i> Logout
+                </button>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- LOGOUT MODAL -->
+<div class="modal-overlay" id="logoutModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="hideLogoutModal()"><i class="fa fa-times"></i></button>
+        <div style="text-align:center;margin-bottom:1.5rem;">
+            <div
+                style="width:52px;height:52px;background:rgba(192,57,43,0.1);border-radius:2px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                <i class="fa fa-sign-out" style="color:#c0392b;font-size:1.3rem;"></i>
+            </div>
+            <h2 style="font-size:1.4rem;font-weight:500;color:var(--espresso);margin-bottom:0.3rem;">Sign out of
+                PhotoPlat?</h2>
+            <p style="font-size:0.82rem;color:var(--bark);">You'll be returned to the homepage. Your profile and
+                settings are saved.</p>
+        </div>
+        <div style="display:flex;gap:0.75rem;justify-content:center;">
+            <button class="btn-secondary" onclick="hideLogoutModal()">Cancel</button>
+            <a class="btn-danger" href="{% url 'logout_page' %}" style="border-color:rgba(192,57,43,0.3);">
+                <i class="fa fa-sign-out"></i> Yes, Sign Out
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="modal-overlay" id="emailModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="hideEmailModal()"><i class="fa fa-times"></i></button>
+        <div style="margin-bottom:1.5rem;">
+            <div class="section-tag"><span>Email Verification</span></div>
+            <h2 style="font-size:1.4rem;font-weight:500;color:var(--espresso);margin-bottom:0.3rem;">Verify Your
+                Email</h2>
+            <p style="font-size:0.82rem;color:var(--bark);margin-bottom:1.25rem;">A verification link will be sent
+                to <strong>anisha.sharma@example.com</strong>. Click the link to confirm your address.</p>
+            <div
+                style="display:flex;align-items:center;gap:0.6rem;padding:0.85rem;background:rgba(193,104,76,0.07);border:1px solid rgba(193,104,76,0.2);border-radius:2px;">
+                <i class="fa fa-info-circle" style="color:var(--terracotta);"></i>
+                <p style="font-size:0.72rem;color:var(--bark);">The link expires in 24 hours. Check your spam folder
+                    if you don't see it.</p>
+            </div>
+        </div>
+        <div style="display:flex;gap:0.75rem;">
+            <button class="btn-primary" onclick="confirmSendEmail()"><i class="fa fa-paper-plane"></i> Send
+                Link</button>
+            <button class="btn-outline" onclick="hideEmailModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <i class="fa fa-check-circle" id="toastIcon"></i>
+    <span id="toastMsg">Action completed</span>
+</div>
+
+<script>
+    // --- Avatar ---
+    function handleAvatarChange(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            document.getElementById('profileAvatarImg').src = ev.target.result;
+            document.getElementById('headerAvatarImg').src = ev.target.result;
+            showToast('Profile photo updated');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeAvatar() {
+        const def = 'https://i.pravatar.cc/300?img=47';
+        document.getElementById('profileAvatarImg').src = def;
+        document.getElementById('headerAvatarImg').src = def;
+        showToast('Photo removed');
+    }
+
+    // --- Email verification toggle demo ---
+    let emailVerified = true;
+    function toggleEmailVerification() {
+        emailVerified = !emailVerified;
+        document.getElementById('emailVerifiedState').style.display = emailVerified ? '' : 'none';
+        document.getElementById('emailUnverifiedState').style.display = emailVerified ? 'none' : '';
+        const badge = document.getElementById('emailBadge');
+        if (emailVerified) {
+            badge.className = 'badge badge-verified';
+            badge.innerHTML = '<i class="fa fa-check-circle"></i> Verified';
+        } else {
+            badge.className = 'badge badge-unverified';
+            badge.innerHTML = '<i class="fa fa-times-circle"></i> Unverified';
+        }
+    }
+
+    function sendVerificationEmail() {
+        document.getElementById('emailModal').classList.add('active');
+    }
+
+    function hideEmailModal() {
+        document.getElementById('emailModal').classList.remove('active');
+    }
+
+    function confirmSendEmail() {
+        hideEmailModal();
+        showToast('Verification email sent! Check your inbox.');
+    }
+
+    // --- File uploads ---
+    function handleFileUpload(e, side) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const previewEl = document.getElementById(side + 'Preview');
+        document.getElementById(side + 'FileName').textContent = file.name;
+        document.getElementById(side + 'FileSize').textContent = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+        previewEl.style.display = 'flex';
+        document.getElementById(side + 'Zone').style.borderColor = 'var(--terracotta)';
+        showToast(side === 'front' ? 'Front side uploaded' : 'Back side uploaded');
+    }
+
+    function removeFile(side) {
+        document.getElementById(side + 'Preview').style.display = 'none';
+        document.getElementById(side + 'Zone').style.borderColor = '';
+    }
+
+    // --- KYC submit ---
+    function submitKYC() {
+        const consent = document.getElementById('consentCheck').checked;
+        if (!consent) { showToast('Please accept the consent declaration', true); return; }
+        document.getElementById('kycFormSection').style.display = 'none';
+        document.getElementById('kycSubmittedSection').style.display = '';
+        const badge = document.getElementById('kycStatusBadge');
+        badge.className = 'badge badge-pending';
+        badge.innerHTML = '<i class="fa fa-clock-o"></i> Under Review';
+        const hBadge = document.getElementById('kycHeaderBadge');
+        hBadge.innerHTML = '<i class="fa fa-clock-o"></i> KYC Under Review';
+        document.getElementById('step2Num').className = 'step-num done';
+        document.getElementById('step2Num').innerHTML = '<i class="fa fa-check" style="font-size:9px;"></i>';
+        document.getElementById('step3Num').className = 'step-num active';
+        document.getElementById('step3Num').textContent = '3';
+        document.getElementById('progressBar').style.width = '85%';
+        document.getElementById('completePct').textContent = '85%';
+        showToast('KYC submitted for review!');
+    }
+
+    function saveDraft() {
+        showToast('Draft saved successfully');
+    }
+
+    // --- Logout ---
+    function showLogoutModal() {
+        document.getElementById('logoutModal').classList.add('active');
+    }
+
+    function hideLogoutModal() {
+        document.getElementById('logoutModal').classList.remove('active');
+    }
+
+    function confirmLogout() {
+        hideLogoutModal();
+        showToast('Signed out. Redirecting…');
+        setTimeout(() => { /* window.location.href = '/'; */ }, 1800);
+    }
+
+    // --- Toast ---
+    let toastTimeout;
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        const icon = document.getElementById('toastIcon');
+        document.getElementById('toastMsg').textContent = msg;
+        icon.className = isError ? 'fa fa-exclamation-circle' : 'fa fa-check-circle';
+        icon.style.color = isError ? '#e07070' : 'var(--terracotta)';
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Close modals on backdrop click
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.addEventListener('click', (e) => {
+            if (e.target === m) m.classList.remove('active');
+        });
+    });
+</script>
+{% endblock content %}

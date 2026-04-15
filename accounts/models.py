@@ -64,3 +64,41 @@ class MyUser(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+    
+    
+class Profile(models.Model):
+    
+    class EMAIL_STATUS(models.TextChoices):
+        PENDING = ("pending", "Pending")
+        VERIFIED = ("verified", "Verified")
+        
+    class KYC_STATUS(models.TextChoices):
+        NOT_SUBMITTED = ("not_submitted", "Not Submitted")
+        IN_REVIEW = ("in_review", "In Review")
+        REJECTED = ("rejected", "Rejected")
+        VERIFIED = ("verified", "Verified")
+    
+    user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    fullname = models.CharField(max_length=60, null=True)
+    date_of_birth = models.DateField(null=True)
+    citizenship_no = models.CharField(max_length=20, null=True) # xx-xx-xx-xxxxx
+    issued_district = models.CharField(max_length=30, null=True)
+    permanent_address = models.CharField(max_length=100, null=True)
+    speciality = models.CharField(max_length=100, null=True)
+    
+    # documents
+    profile_photo = models.ImageField(upload_to="profile_photos", null=True, blank=True)
+    citizenship_front = models.ImageField(upload_to="citizenships", null=True, blank=True)
+    citizenship_back = models.ImageField(upload_to="citizenships", null=True, blank=True)
+    
+    # verification
+    email_verified = models.CharField(choices=EMAIL_STATUS, default=EMAIL_STATUS.PENDING)
+    kyc_verified = models.CharField(choices=KYC_STATUS, default=KYC_STATUS.NOT_SUBMITTED)
+    
+    # rejection reason
+    rejection_reason = models.TextField(null=True, blank=True)
+    
+    
+    def __str__(self):
+        return f"{self.user.email}'s profile"
+    

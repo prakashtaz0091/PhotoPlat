@@ -809,102 +809,26 @@
             </div>
 
             <!-- KYC Form -->
-            <div id="kycFormSection">
+            <form id="kycFormSection" action="{% url 'submit_kyc_page' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <hr class="divider" />
                 <p
                     style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--bark);margin-bottom:1.25rem;">
                     Personal Information</p>
 
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-                    <div class="form-group">
-                        <label class="form-label">Full Name (as per citizenship)</label>
-                        <input type="text" class="form-input" placeholder="Anisha Sharma" value="Anisha Sharma" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Date of Birth</label>
-                        <input type="date" class="form-input" value="1995-06-14" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Citizenship Number</label>
-                        <input type="text" class="form-input" placeholder="e.g. 23-01-75-12345" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Issued District</label>
-                        <input type="text" class="form-input" placeholder="e.g. Kathmandu" />
-                    </div>
+                {% if errors is not None %}
+                <div class="errors">
+                    {{errors}}
                 </div>
+                {% endif %}
 
-                <div class="form-group">
-                    <label class="form-label">Permanent Address</label>
-                    <input type="text" class="form-input"
-                        placeholder="Ward No., VDC/Municipality, District, Province" />
-                </div>
+
+
+                {{profile_form}}
 
                 <hr class="divider" />
 
-                <!-- Citizenship Front -->
-                <p
-                    style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--bark);margin-bottom:1.25rem;">
-                    Citizenship Document Upload</p>
 
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
-                    <div>
-                        <label class="form-label" style="margin-bottom:0.6rem;">
-                            <i class="fa fa-id-card" style="margin-right:0.3rem;color:var(--terracotta);"></i>
-                            Citizenship — Front Side
-                        </label>
-                        <div class="upload-zone" id="frontZone" onclick="void(0)">
-                            <input type="file" accept="image/*,.pdf" onchange="handleFileUpload(event,'front')" />
-                            <div class="upload-icon">
-                                <i class="fa fa-camera" style="color:var(--terracotta);font-size:14px;"></i>
-                            </div>
-                            <p style="font-size:0.78rem;font-weight:500;color:var(--espresso);margin-bottom:0.2rem;">
-                                Upload Front Side</p>
-                            <p style="font-size:0.68rem;color:var(--clay);">JPG, PNG or PDF · Max 10MB</p>
-                        </div>
-                        <div id="frontPreview" style="display:none;" class="file-preview">
-                            <i class="fa fa-file-image-o"></i>
-                            <div style="flex:1;min-width:0;">
-                                <p style="font-size:0.75rem;font-weight:500;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
-                                    id="frontFileName">citizenship_front.jpg</p>
-                                <p style="font-size:0.65rem;color:var(--clay);" id="frontFileSize">2.1 MB</p>
-                            </div>
-                            <button onclick="removeFile('front')"
-                                style="background:none;border:none;cursor:pointer;color:var(--clay);font-size:12px;">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Citizenship Back -->
-                    <div>
-                        <label class="form-label" style="margin-bottom:0.6rem;">
-                            <i class="fa fa-id-card" style="margin-right:0.3rem;color:var(--bark);"></i>
-                            Citizenship — Back Side
-                        </label>
-                        <div class="upload-zone" id="backZone">
-                            <input type="file" accept="image/*,.pdf" onchange="handleFileUpload(event,'back')" />
-                            <div class="upload-icon">
-                                <i class="fa fa-camera" style="color:var(--terracotta);font-size:14px;"></i>
-                            </div>
-                            <p style="font-size:0.78rem;font-weight:500;color:var(--espresso);margin-bottom:0.2rem;">
-                                Upload Back Side</p>
-                            <p style="font-size:0.68rem;color:var(--clay);">JPG, PNG or PDF · Max 10MB</p>
-                        </div>
-                        <div id="backPreview" style="display:none;" class="file-preview">
-                            <i class="fa fa-file-image-o"></i>
-                            <div style="flex:1;min-width:0;">
-                                <p style="font-size:0.75rem;font-weight:500;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
-                                    id="backFileName">citizenship_back.jpg</p>
-                                <p style="font-size:0.65rem;color:var(--clay);" id="backFileSize">1.8 MB</p>
-                            </div>
-                            <button onclick="removeFile('back')"
-                                style="background:none;border:none;cursor:pointer;color:var(--clay);font-size:12px;">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Guidelines -->
                 <div
@@ -934,7 +858,7 @@
 
                 <!-- Consent -->
                 <label style="display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;margin-bottom:1.5rem;">
-                    <input type="checkbox" id="consentCheck"
+                    <input type="checkbox" id="consentCheck" required
                         style="margin-top:2px;accent-color:var(--terracotta);cursor:pointer;" />
                     <span style="font-size:0.75rem;color:var(--bark);line-height:1.5;">
                         I confirm that the documents submitted belong to me and that all information provided is
@@ -945,14 +869,11 @@
                 </label>
 
                 <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-                    <button class="btn-primary" onclick="submitKYC()">
-                        <i class="fa fa-shield"></i> Submit for Verification
-                    </button>
-                    <button class="btn-outline" onclick="saveDraft()">
-                        <i class="fa fa-floppy-o"></i> Save Draft
+                    <button class="btn-outline" type="submit">
+                        <i class="fa fa-floppy-o"></i> Submit KYC form
                     </button>
                 </div>
-            </div>
+            </form>
 
             <!-- KYC Submitted State (hidden by default) -->
             <div id="kycSubmittedSection" style="display:none;">
@@ -1133,9 +1054,20 @@
         showToast('KYC submitted for review!');
     }
 
-    function saveDraft() {
-        showToast('Draft saved successfully');
-    }
+    // function saveDraft(event) {
+    //     event.preventDefault();
+    //     const formElement = document.getElementById("kycFormSection")
+
+    //     // const formData = new FormData(formElement);
+    //     // console.log("formData", formData);
+
+    //     formElement.submit()
+
+    //     // const data = {};
+    //     // for (const [key, value] of formData.entries()) {
+    //     //     data[key] = value;
+    //     // }
+    // }
 
     // --- Logout ---
     function showLogoutModal() {

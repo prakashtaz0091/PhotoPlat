@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-
+from django.db import models
 from accounts.models import MyUser, Profile
 
 
@@ -63,7 +63,8 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ["is_admin"]
     fieldsets = [
         (None, {"fields": ["email", "password"]}),
-        ("Permissions", {"fields": ["is_admin"]}),
+        ("Permissions", {"fields": ["is_admin", "is_staff"]}),
+        ("Groups", {"fields": ["groups"]}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -85,7 +86,49 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(MyUser, UserAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
-admin.site.unregister(Group)
+# admin.site.unregister(Group)
 
 
-admin.site.register(Profile)
+
+class ProfileAdminForm(forms.ModelForm):
+    KYC_ADMIN_CHOICES = [
+        ("verified", "Verified"),
+        ("rejected", "Rejected")
+    ]
+    kyc_verified = forms.ChoiceField(choices=KYC_ADMIN_CHOICES)
+    
+    class Meta:
+        model = MyUser
+        fields = "__all__"
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        kyc_verified = cleaned_data.get("kyc_verified")
+        reason = cleaned_data.get("rejection_reason")
+
+        if kyc_verified == "rejected" and not reason:
+            raise forms.ValidationError(
+                {"rejection_reason": "Reason must not be empty when KYC is rejected."}
+            )
+
+        return cleaned_data
+
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    form = ProfileAdminForm
+    list_display = ["user", "kyc_verified"]
+    readonly_fields = ("user", "fullname", "date_of_birth", "citizenship_no", "issued_district", "permanent_address", "speciality", "profile_photo", "citizenship_front", "citizenship_back", "email_verified")
+    fieldsets = [
+        ("Basic Informations", {"fields": ["fullname", "user", "date_of_birth", "permanent_address"]}),
+        ("Citizenship Informations", {"fields": ["citizenship_no", "issued_district", "citizenship_front", "citizenship_back"]}),
+        ("Other Informations", {"fields": ["profile_photo", "speciality", "email_verified"]}),
+        ("KYC Information", {"fields": ["kyc_verified", "rejection_reason"]})
+    ]
+
+
+    
+    
+    
+    
+admin.site.register(Profile, ProfileAdmin)

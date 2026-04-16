@@ -3,10 +3,29 @@ from .admin import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import Profile
+from accounts.forms import ProfileForm
 
+def submit_kyc(request):
+    if request.method == "POST":
+        submitted_form = ProfileForm(request.POST, request.FILES, request=request)
+        if submitted_form.is_valid():
+            submitted_form.save()
+            return redirect("profile_page")
+        else:
+            context = {
+                "profile_form": submitted_form
+            }
+            return render(request, "accounts/profile.html", context)
 
 def profile_view(request):
-    return render(request, "accounts/profile.html")
+    if request.user.profile is not None:
+        form = ProfileForm(instance=request.user.profile, request=request)
+    else:
+        form = ProfileForm(request=request)
+    context = {
+        "profile_form": form
+    }
+    return render(request, "accounts/profile.html", context)
 
 def logout_view(request):
     logout(request)

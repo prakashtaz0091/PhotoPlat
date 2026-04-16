@@ -127,3 +127,7 @@ SESSION_COOKIE_AGE = 1_209_600 # 2 weeks, provide value in seconds
 
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = '/media/'
+
+# file size
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1024*1024  # 1 MB in bytes
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024*1024  # 1 MB in bytes

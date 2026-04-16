@@ -987,6 +987,9 @@
                 {% if not request.user.is_authenticated %}
                 <a href="{% url 'login_page' %}">For Photographers</a>
                 <a href="#" class="nav-cta">Book Now</a>
+                {% else %}
+                <a href="{% url 'profile_page' %}" class="nav-cta">Profile</a>
+
                 {% endif %}
 
 

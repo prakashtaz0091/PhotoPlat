@@ -827,52 +827,87 @@
                 {{profile_form}}
 
                 <hr class="divider" />
-
-
-
-                <!-- Guidelines -->
-                <div
-                    style="background:rgba(107,122,94,0.07);border:1px solid rgba(107,122,94,0.18);border-radius:2px;padding:0.9rem 1rem;margin-bottom:1.5rem;">
+                <div>
                     <p
-                        style="font-size:0.7rem;font-weight:600;color:var(--moss);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.08em;">
-                        Upload Guidelines</p>
-                    <ul style="list-style:none;display:flex;flex-direction:column;gap:0.3rem;">
-                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
-                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Document must be
-                            clear, all four corners visible
-                        </li>
-                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
-                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> No blur, glare, or
-                            shadows covering text
-                        </li>
-                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
-                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Original document
-                            only — no photocopies
-                        </li>
-                        <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
-                            <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Your data is
-                            encrypted and stored securely
-                        </li>
-                    </ul>
-                </div>
+                        style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--bark);margin-bottom:1.25rem;">
+                        Current documents</p>
+                    <div class="flex items-start justify-between gap-2">
+                        {% if request.user.profile.citizenship_front %}
+                        <div class="flex-1 flex flex-col items-start">
+                            <p style="font-size:0.72rem;color:var(--bark);">Citizenship Front</p>
+                            <img class="w-full object-cover border border-gray-200"
+                                src="{{request.user.profile.citizenship_front.url}}" alt="Citizenship front"
+                                style="border-radius:2px;">
+                        </div>
+                        {% else %}
+                        <div
+                            style="border:2px dashed #2A1E15; border-radius: 6px; width: 48%; height: 200px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                            <p> No file</p>
+                        </div>
+                        {% endif %}
+                        {% if request.user.profile.citizenship_back %}
+                        <div class="flex-1 flex flex-col items-start">
+                            <p style="font-size:0.72rem;color:var(--bark);">Citizenship Back</p>
+                            <img class="w-full object-cover border border-gray-200"
+                                src="{{request.user.profile.citizenship_back.url}}" alt="Citizenship back"
+                                style="border-radius:2px;">
+                        </div>
+                        {% else %}
+                        <div
+                            style="border:2px dashed #2A1E15; border-radius: 6px; width: 48%; height: 200px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                            <p> No file</p>
+                        </div>
+                        {% endif %}
+                    </div>
 
-                <!-- Consent -->
-                <label style="display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;margin-bottom:1.5rem;">
-                    <input type="checkbox" id="consentCheck" required
-                        style="margin-top:2px;accent-color:var(--terracotta);cursor:pointer;" />
-                    <span style="font-size:0.75rem;color:var(--bark);line-height:1.5;">
-                        I confirm that the documents submitted belong to me and that all information provided is
-                        accurate. I consent to PhotoPlat processing my personal data for identity verification
-                        purposes as per the <a href="#" style="color:var(--terracotta);text-decoration:none;">Privacy
-                            Policy</a>.
-                    </span>
-                </label>
+                    <hr class=" divider" />
 
-                <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-                    <button class="btn-outline" type="submit">
-                        <i class="fa fa-floppy-o"></i> Submit KYC form
-                    </button>
-                </div>
+
+
+                    <!-- Guidelines -->
+                    <div
+                        style="background:rgba(107,122,94,0.07);border:1px solid rgba(107,122,94,0.18);border-radius:2px;padding:0.9rem 1rem;margin-bottom:1.5rem;">
+                        <p
+                            style="font-size:0.7rem;font-weight:600;color:var(--moss);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.08em;">
+                            Upload Guidelines</p>
+                        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.3rem;">
+                            <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                                <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Document must be
+                                clear, all four corners visible
+                            </li>
+                            <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                                <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> No blur, glare, or
+                                shadows covering text
+                            </li>
+                            <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                                <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Original document
+                                only — no photocopies
+                            </li>
+                            <li style="font-size:0.72rem;color:var(--bark);display:flex;align-items:center;gap:0.4rem;">
+                                <i class="fa fa-check" style="color:var(--sage);font-size:10px;"></i> Your data is
+                                encrypted and stored securely
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Consent -->
+                    <label style="display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;margin-bottom:1.5rem;">
+                        <input type="checkbox" id="consentCheck" required
+                            style="margin-top:2px;accent-color:var(--terracotta);cursor:pointer;" />
+                        <span style="font-size:0.75rem;color:var(--bark);line-height:1.5;">
+                            I confirm that the documents submitted belong to me and that all information provided is
+                            accurate. I consent to PhotoPlat processing my personal data for identity verification
+                            purposes as per the <a href="#"
+                                style="color:var(--terracotta);text-decoration:none;">Privacy
+                                Policy</a>.
+                        </span>
+                    </label>
+
+                    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                        <button class="btn-outline" type="submit">
+                            <i class="fa fa-floppy-o"></i> Submit KYC form
+                        </button>
+                    </div>
             </form>
 
             <!-- KYC Submitted State (hidden by default) -->
@@ -972,20 +1007,75 @@
     function handleAvatarChange(e) {
         const file = e.target.files[0];
         if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            showToast('Invalid file type');
+            return;
+        }
+
+        const profileImg = document.getElementById('profileAvatarImg');
+        const headerImg = document.getElementById('headerAvatarImg');
+        const oldSrc = profileImg.src;
+
         const reader = new FileReader();
         reader.onload = (ev) => {
-            document.getElementById('profileAvatarImg').src = ev.target.result;
-            document.getElementById('headerAvatarImg').src = ev.target.result;
-            showToast('Profile photo updated');
+            profileImg.src = ev.target.result;
+            headerImg.src = ev.target.result;
         };
         reader.readAsDataURL(file);
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+        fetch("{% url 'upload_profile_photo_page' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            body: formData
+        })
+            .then(res => {
+                console.log("Response got");
+
+                if (!res.ok) throw new Error();
+                return res.json();
+            })
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                } else {
+                    profileImg.src = oldSrc;
+                    headerImg.src = oldSrc;
+                    alert(data.message)
+                }
+            })
+            .catch(() => {
+                profileImg.src = oldSrc;
+                headerImg.src = oldSrc;
+                showToast('Upload failed');
+            });
+
+        e.target.value = '';
     }
 
     function removeAvatar() {
-        const def = 'https://i.pravatar.cc/300?img=47';
-        document.getElementById('profileAvatarImg').src = def;
-        document.getElementById('headerAvatarImg').src = def;
-        showToast('Photo removed');
+        fetch("{% url 'remove_profile_photo_page' %}").then(res => {
+            // showToast(res.message)
+            return res.json();
+        }).then(data => {
+            // console.log(data);
+            alert(data.message);
+
+            const profileImg = document.getElementById('profileAvatarImg');
+            const headerImg = document.getElementById('headerAvatarImg');
+            const default_url = window.location.origin + data.default_url;
+
+            profileImg.src = default_url
+            headerImg.src = default_url
+        })
+
     }
 
     // --- Email verification toggle demo ---
@@ -1087,6 +1177,8 @@
     // --- Toast ---
     let toastTimeout;
     function showToast(msg, isError = false) {
+        console.log("message", msg);
+
         const toast = document.getElementById('toast');
         const icon = document.getElementById('toastIcon');
         document.getElementById('toastMsg').textContent = msg;

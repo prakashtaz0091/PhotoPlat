@@ -57,6 +57,17 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         return super().has_module_perms(app_label)
 
 
+class Speciality(models.Model):
+    name = models.CharField(max_length=50)
+    
+    class Meta:
+        verbose_name_plural = "Specialities"
+    
+    # wedding.profiles.count()
+    def __str__(self):
+        return self.name
+    
+
 class Profile(models.Model):
     
     class EMAIL_STATUS(models.TextChoices):
@@ -69,13 +80,20 @@ class Profile(models.Model):
         REJECTED = ("rejected", "Rejected")
         VERIFIED = ("verified", "Verified")
     
+    
+    class CURRENCY_CHOICES(models.TextChoices):
+        NPR = ('npr', 'रु')
+        INR = ('inr', '₹')
+        USD = ('usd', '$')
+    
+
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=60, null=True)
     date_of_birth = models.DateField(null=True)
     citizenship_no = models.CharField(max_length=20, null=True) # xx-xx-xx-xxxxx
     issued_district = models.CharField(max_length=30, null=True)
     permanent_address = models.CharField(max_length=100, null=True)
-    speciality = models.CharField(max_length=100, null=True)
+    specialities = models.ManyToManyField(Speciality, related_name="profiles")
     
     # documents
     profile_photo = models.ImageField(upload_to="profile_photos", null=True, blank=True, validators=[validate_file_size])
@@ -89,6 +107,9 @@ class Profile(models.Model):
     # rejection reason
     rejection_reason = models.TextField(null=True, blank=True)
     
+    # pricing
+    currency = models.CharField(choices=CURRENCY_CHOICES, default="npr")
+    per_day_fee = models.PositiveIntegerField(default=0) 
     
     def __str__(self):
         return f"{self.user.email}'s profile"

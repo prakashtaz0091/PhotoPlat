@@ -43,6 +43,7 @@ def upload_profile_photo(request):
             "message": "Profile photo uploaded successfully"
         })
 
+
 def submit_kyc(request):
     if request.method == "POST":
         submitted_form = ProfileForm(request.POST, request.FILES, request=request)
@@ -54,6 +55,7 @@ def submit_kyc(request):
                 "profile_form": submitted_form
             }
             return render(request, "accounts/profile.html", context)
+        
 
 def profile_view(request):
     if request.user.profile is not None:

@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.db import models
-from accounts.models import MyUser, Profile
+from accounts.models import MyUser, Profile, Speciality
 
 
 class UserCreationForm(forms.ModelForm):
@@ -117,12 +117,13 @@ class ProfileAdminForm(forms.ModelForm):
 
 class ProfileAdmin(admin.ModelAdmin):
     form = ProfileAdminForm
-    list_display = ["user", "kyc_verified"]
-    readonly_fields = ("user", "fullname", "date_of_birth", "citizenship_no", "issued_district", "permanent_address", "speciality", "profile_photo", "citizenship_front", "citizenship_back", "email_verified")
+    list_display = ["user", "kyc_verified", "email_verified"]
+    readonly_fields = ("user", "fullname", "date_of_birth", "citizenship_no", "issued_district", "permanent_address", "profile_photo", "citizenship_front", "citizenship_back", "email_verified", "per_day_fee", "currency", "specialities")
     fieldsets = [
         ("Basic Informations", {"fields": ["fullname", "user", "date_of_birth", "permanent_address"]}),
         ("Citizenship Informations", {"fields": ["citizenship_no", "issued_district", "citizenship_front", "citizenship_back"]}),
-        ("Other Informations", {"fields": ["profile_photo", "speciality", "email_verified"]}),
+        ("Pricing Informations", {"fields": ["currency", "per_day_fee"]}),
+        ("Other Informations", {"fields": ["profile_photo","specialities", "email_verified"]}),
         ("KYC Information", {"fields": ["kyc_verified", "rejection_reason"]})
     ]
 
@@ -132,3 +133,6 @@ class ProfileAdmin(admin.ModelAdmin):
     
     
 admin.site.register(Profile, ProfileAdmin)
+
+
+admin.site.register(Speciality)

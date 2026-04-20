@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Group, PermissionsMixin
 from main.validators import validate_file_size
+from django.utils.text import slugify
 
 
 class MyUserManager(BaseUserManager):
@@ -59,7 +60,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
 class Speciality(models.Model):
     name = models.CharField(max_length=50)
-    
+    slug = models.SlugField(max_length=50, null=True, blank=True, unique=True)
+
     class Meta:
         verbose_name_plural = "Specialities"
     
@@ -67,7 +69,12 @@ class Speciality(models.Model):
     def __str__(self):
         return self.name
     
-
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+        
+        
 class Profile(models.Model):
     
     class EMAIL_STATUS(models.TextChoices):

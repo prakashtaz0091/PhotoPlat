@@ -1,0 +1,9 @@
+1. First create a nav-link (a-tag in navbar in base.html) called packages, show this link only if the user is logged in
+
+2. On-clicking packages link, show a new page called packages, where we need to show packages created by the photographer itself.
+
+3. Add new link called 'Create new package' in packages page, which will again take user to new page. This page will contain a package creation and update form
+
+4. Improve view to save newly created package in database
+
+5. Show active packages in homepage. Create a different section like the 'Featured Photographers' one.

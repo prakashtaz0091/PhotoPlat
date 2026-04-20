@@ -161,10 +161,21 @@
         </div>
 
         <div class="listings-filters">
-            <button class="filter-btn active">All</button>
-            {% for speciality in specialities %}
-            <button class="filter-btn">{{speciality.name}} | {{ speciality.profile_count }}</button>
-            {% endfor %}
+            <form action="{% url 'home_page' %}" method="get">
+
+                <select class="filter-btn" style="background-color: antiquewhite; color: black;" name="speciality"
+                    id="">
+                    <option value="all">All</option>
+                    {% for speciality in specialities %}
+                    <option value="{{speciality.slug}}">{{speciality.name}} | {{ speciality.profile_count }}</option>
+                    {% endfor %}
+
+                </select>
+
+                <input class="filter-btn" style="background-color: antiquewhite; color: black;" type="number"
+                    name="max_price" placeholder="max per-day-fee">
+                <button type="submit" class="filter-btn">Apply</button>
+            </form>
 
         </div>
 

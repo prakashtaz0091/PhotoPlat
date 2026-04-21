@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class PackageManager(models.Manager):
+    def for_profile(self, profile):
+        return self.filter(photographer=profile)
+    
+
 class Package(models.Model):
     active = models.BooleanField(default=True)
     photographer = models.ForeignKey("accounts.Profile", on_delete=models.DO_NOTHING)
@@ -16,6 +21,17 @@ class Package(models.Model):
     discount_text = models.CharField(max_length=50, help_text="Eg. Wedding season", null=True, blank=True)
     discount_end_date = models.DateField(help_text="Its offer ending date")
 
+
+    # Manager
+    objects = PackageManager()
+
+    @property
+    def final_price(self):
+        return self.price - self.discount
+    
+    @property
+    def free_accessories_list(self):
+        return self.free_accessories.split(sep=",")
     
     class Meta:
         unique_together = ("photographer", "name")

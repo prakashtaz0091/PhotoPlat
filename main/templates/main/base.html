@@ -979,15 +979,11 @@
         <div class="nav-inner">
             <a href="{% url 'home_page' %}" class="logo">Photo<span>Plat</span></a>
             <div class="nav-links">
-                <a href="#">Browse</a>
-                <a href="#">How It Works</a>
-                <a href="#">Pricing</a>
-                <a href="#">Blog</a>
 
                 {% if not request.user.is_authenticated %}
                 <a href="{% url 'login_page' %}">For Photographers</a>
-                <a href="#" class="nav-cta">Book Now</a>
                 {% else %}
+                <a href="{% url 'packages_page' %}">Packages</a>
                 <a href="{% url 'profile_page' %}" class="nav-cta">Profile</a>
 
                 {% endif %}

@@ -1,0 +1,575 @@
+{% extends 'main/base.html' %}
+
+{% block extra_head %}
+
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    cream: '#F5F0E8',
+                    parchment: '#EDE5D4',
+                    sand: '#D9CABA',
+                    terracotta: '#C1684C',
+                    espresso: '#3B2B1F',
+                    'deep-espresso': '#2A1E15',
+                    bark: '#7A5C3E',
+                    clay: '#B8956A',
+                    moss: '#6B7A5E',
+                    sage: '#9DAF8E',
+                },
+                fontFamily: {
+                    display: ['Cormorant Garamond', 'serif'],
+                    body: ['Jost', 'sans-serif'],
+                },
+                borderRadius: { DEFAULT: '2px', sm: '2px', md: '2px', lg: '2px', xl: '2px', '2xl': '2px', full: '9999px' },
+            }
+        }
+    }
+</script>
+<style>
+    *,
+    *::before,
+    *::after {
+        font-family: 'Jost', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .font-display {
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    body {
+        background-color: #F5F0E8;
+        color: #3B2B1F;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.03;
+    }
+
+    .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Jost', sans-serif;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #7A5C3E;
+    }
+
+    .section-tag::before {
+        content: '';
+        display: block;
+        width: 28px;
+        height: 1.5px;
+        background: #C1684C;
+    }
+
+    .card-border {
+        border: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .pkg-card {
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pkg-card:hover {
+        box-shadow: 0 12px 40px rgba(59, 43, 31, 0.12), 0 2px 8px rgba(59, 43, 31, 0.06);
+        transform: translateY(-3px);
+    }
+
+    .pkg-card.inactive {
+        opacity: 0.6;
+    }
+
+    .pkg-card.inactive::after {
+        content: 'INACTIVE';
+        position: absolute;
+        top: 14px;
+        right: -22px;
+        background: #7A5C3E;
+        color: #F5F0E8;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        padding: 3px 28px;
+        transform: rotate(45deg);
+        font-family: 'Jost', sans-serif;
+    }
+
+    .discount-badge {
+        background: #C1684C;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        padding: 3px 10px;
+        border-radius: 2px;
+        text-transform: uppercase;
+    }
+
+    .price-original {
+        text-decoration: line-through;
+        color: #B8956A;
+        font-size: 0.85rem;
+    }
+
+    .price-final {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 500;
+        color: #3B2B1F;
+        line-height: 1;
+    }
+
+    .meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(184, 149, 106, 0.12);
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 400;
+        color: #7A5C3E;
+        letter-spacing: 0.04em;
+    }
+
+    .meta-pill i {
+        color: #B8956A;
+        font-size: 10px;
+    }
+
+    .btn-primary {
+        background: #C1684C;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 2px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-primary:hover {
+        background: #a8563c;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: #3B2B1F;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 2px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-secondary:hover {
+        background: #2A1E15;
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: #7A5C3E;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 9px 18px;
+        border-radius: 2px;
+        border: 1px solid rgba(184, 149, 106, 0.35);
+        cursor: pointer;
+        transition: border-color 0.2s, color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-ghost:hover {
+        border-color: #C1684C;
+        color: #C1684C;
+    }
+
+    .divider {
+        border: none;
+        border-top: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .pkg-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #3B2B1F;
+    }
+
+    .empty-state {
+        background: #EDE5D4;
+        border: 1px dashed rgba(184, 149, 106, 0.4);
+        border-radius: 2px;
+        text-align: center;
+        padding: 5rem 2rem;
+    }
+
+    .filter-tab {
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 7px 16px;
+        border-radius: 2px;
+        cursor: pointer;
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        color: #7A5C3E;
+        background: transparent;
+        transition: all 0.2s;
+    }
+
+    .filter-tab.active,
+    .filter-tab:hover {
+        background: #3B2B1F;
+        color: #F5F0E8;
+        border-color: #3B2B1F;
+    }
+
+    .accessories-list {
+        font-size: 12px;
+        color: #7A5C3E;
+        line-height: 1.8;
+    }
+
+    .accessories-list li::before {
+        content: '—';
+        margin-right: 6px;
+        color: #C1684C;
+    }
+
+    .countdown {
+        font-size: 10px;
+        color: #C1684C;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+    }
+
+    /* Dropdown action menu */
+    .action-menu {
+        position: relative;
+    }
+
+    .action-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 6px);
+        z-index: 50;
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.3);
+        border-radius: 2px;
+        min-width: 150px;
+        box-shadow: 0 8px 24px rgba(59, 43, 31, 0.12);
+    }
+
+    .action-menu:hover .action-dropdown {
+        display: block;
+    }
+
+    .action-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 14px;
+        font-size: 12px;
+        color: #3B2B1F;
+        text-decoration: none;
+        letter-spacing: 0.04em;
+        transition: background 0.15s;
+    }
+
+    .action-dropdown a:hover {
+        background: rgba(193, 104, 76, 0.08);
+        color: #C1684C;
+    }
+
+    .action-dropdown a.danger:hover {
+        background: rgba(193, 104, 76, 0.08);
+        color: #c0392b;
+    }
+
+    .action-dropdown a i {
+        width: 14px;
+        font-size: 12px;
+    }
+
+    /* Stats bar */
+    .stat-block {
+        border-right: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .stat-block:last-child {
+        border-right: none;
+    }
+</style>
+
+{% endblock extra_head %}
+
+{% block content %}
+<!-- ===================== PAGE CONTENT ===================== -->
+<main class="relative z-10" style="padding-top: 88px;">
+
+    <!-- Page Header -->
+    <section style="background: #2A1E15; padding: 4rem 0 3.5rem;" class="relative overflow-hidden">
+        <!-- subtle terracotta glow -->
+        <div
+            style="position:absolute;top:-60px;right:10%;width:320px;height:320px;background:radial-gradient(circle,rgba(193,104,76,0.08) 0%,transparent 70%);pointer-events:none;">
+        </div>
+        <div class="max-w-6xl mx-auto px-6 md:px-10">
+            <span class="section-tag" style="color:#B8956A;">
+                <span style="background:#C1684C;"></span>Dashboard
+            </span>
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mt-4">
+                <div>
+                    <h1 class="font-display text-4xl md:text-5xl font-light"
+                        style="color:#F5F0E8; letter-spacing:-0.01em;">
+                        My <em>Packages</em>
+                    </h1>
+                    <p class="mt-2" style="color:#B8956A; font-size:13px; font-weight:300; letter-spacing:0.04em;">
+                        Manage, price, and publish your photography packages.
+                    </p>
+                </div>
+                <a href="/packages/create/" class="btn-primary" style="align-self:flex-start;">
+                    <i class="fa fa-plus"></i> Create New Package
+                </a>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="flex flex-wrap mt-8 gap-0"
+                style="border:1px solid rgba(184,149,106,0.15); border-radius:2px; overflow:hidden;">
+                <div class="stat-block flex-1 px-6 py-4" style="min-width:130px;">
+                    <div class="font-display text-3xl font-light" style="color:#F5F0E8;">6</div>
+                    <div
+                        style="font-size:10px; letter-spacing:0.14em; color:#7A5C3E; text-transform:uppercase; margin-top:2px;">
+                        Total Packages</div>
+                </div>
+                <div class="stat-block flex-1 px-6 py-4" style="min-width:130px;">
+                    <div class="font-display text-3xl font-light" style="color:#9DAF8E;">5</div>
+                    <div
+                        style="font-size:10px; letter-spacing:0.14em; color:#7A5C3E; text-transform:uppercase; margin-top:2px;">
+                        Active</div>
+                </div>
+                <div class="stat-block flex-1 px-6 py-4" style="min-width:130px;">
+                    <div class="font-display text-3xl font-light" style="color:#C1684C;">3</div>
+                    <div
+                        style="font-size:10px; letter-spacing:0.14em; color:#7A5C3E; text-transform:uppercase; margin-top:2px;">
+                        With Discounts</div>
+                </div>
+                <div class="stat-block flex-1 px-6 py-4" style="min-width:130px;">
+                    <div class="font-display text-3xl font-light" style="color:#F5F0E8;">NPR 85,000</div>
+                    <div
+                        style="font-size:10px; letter-spacing:0.14em; color:#7A5C3E; text-transform:uppercase; margin-top:2px;">
+                        Avg. Price</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter + Controls -->
+    <section style="background:#EDE5D4; border-bottom:1px solid rgba(184,149,106,0.2); padding:1rem 0;">
+        <div class="max-w-6xl mx-auto px-6 md:px-10 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex gap-2 flex-wrap">
+                <button class="filter-tab active">All</button>
+                <button class="filter-tab">Active</button>
+                <button class="filter-tab">Inactive</button>
+                <button class="filter-tab">Discounted</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <span style="font-size:10px; letter-spacing:0.12em; color:#B8956A; text-transform:uppercase;">Sort
+                    by:</span>
+                <select
+                    style="background:#F5F0E8; border:1px solid rgba(184,149,106,0.25); border-radius:2px; font-size:11px; color:#3B2B1F; padding:6px 10px; font-family:'Jost',sans-serif; letter-spacing:0.04em; appearance:none; padding-right:24px; cursor:pointer;">
+                    <option>Date Created</option>
+                    <option>Price: Low–High</option>
+                    <option>Price: High–Low</option>
+                    <option>Name A–Z</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Grid -->
+    <section style="padding: 4rem 0 6rem;">
+        <div class="max-w-6xl mx-auto px-6 md:px-10">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                {% for package in packages %}
+                <!-- ===== PACKAGE CARD 1 — Premium Wedding ===== -->
+                <div class="pkg-card {% if package.active == 0 %} inactive {% endif %} ">
+                    <!-- Top accent line -->
+                    <div style="height:3px; background: linear-gradient(90deg, #C1684C, transparent);"></div>
+                    <div class="p-6">
+                        <!-- Header -->
+                        <div class="flex items-start justify-between gap-2 mb-4">
+                            <div>
+                                <span class="discount-badge">{{ package.discount_text }}</span>
+                                <h3 class="pkg-name mt-2"> {{ package.name }} </h3>
+                            </div>
+                            <div class="action-menu">
+                                <button class="btn-ghost" style="padding:7px 12px;">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </button>
+                                <div class="action-dropdown">
+                                    <a href="#"><i class="fa fa-pencil"></i> Edit</a>
+                                    <a href="#"><i class="fa fa-toggle-on"></i> Deactivate</a>
+                                    <a href="#" class="danger"><i class="fa fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meta pills -->
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="meta-pill"><i class="fa fa-calendar"></i> {{ package.duration }} </span>
+                            <span class="meta-pill"><i class="fa fa-camera"></i> {{ package.no_of_cameras }}
+                                Cameras</span>
+                            <span class="meta-pill"><i class="fa fa-users"></i> {{ package.no_of_staffs }} Staff</span>
+
+                            {% if package.drone_included %}
+                            <span class="meta-pill" style="color:#6B7A5E;"><i class="fa fa-plane"
+                                    style="color:#6B7A5E;"></i> Drone Included</span>
+                            {% endif %}
+                        </div>
+
+                        <hr class="divider mb-4" />
+
+                        <!-- Accessories -->
+                        <div class="mb-4">
+                            <p
+                                style="font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#B8956A; margin-bottom:6px;">
+                                Free Accessories</p>
+                            <ul class="accessories-list list-none">
+                                {% for accessory in package.free_accessories_list %}
+                                <li>{{accessory}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <hr class="divider mb-4" />
+
+                        <!-- Pricing -->
+                        <div class="flex items-end justify-between gap-2 mb-1">
+                            <div>
+                                <div class="price-original"> {{ currency_display_text }} {{ package.price }} </div>
+                                <div class="price-final"> {{ currency_display_text }} {{ package.final_price}} </div>
+                                <div style="font-size:10px; color:#6B7A5E; margin-top:3px; letter-spacing:0.04em;">You
+                                    save {{ currency_display_text }} {{ package.discount }}</div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div
+                                    style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#B8956A;">
+                                    Delivery</div>
+                                <div
+                                    style="font-size:1.1rem; font-family:'Cormorant Garamond',serif; color:#3B2B1F; font-weight:500;">
+                                    {{ package.delivery_time }} Days</div>
+                            </div>
+                        </div>
+                        <div class="countdown mt-2"><i class="fa fa-clock-o"></i> Offer ends
+                            {{package.discount_end_date}}</div>
+                    </div>
+                    <!-- Footer -->
+                    <div
+                        style="background:rgba(184,149,106,0.07); border-top:1px solid rgba(184,149,106,0.2); padding:12px 20px; display:flex; gap:8px; justify-content:flex-end;">
+                        <a href="#" class="btn-ghost" style="font-size:10px; padding:7px 14px;"><i
+                                class="fa fa-eye"></i> Preview</a>
+                        <a href="/packages/1/edit/" class="btn-secondary" style="font-size:10px; padding:7px 14px;"><i
+                                class="fa fa-pencil"></i> Edit</a>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- ===== CARD 6 — Create New CTA ===== -->
+                <div style="border:1px dashed rgba(193,104,76,0.3); border-radius:2px; background:rgba(193,104,76,0.03); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:3rem 2rem; text-align:center; min-height:360px; cursor:pointer; transition:background 0.2s;"
+                    onmouseover="this.style.background='rgba(193,104,76,0.06)'"
+                    onmouseout="this.style.background='rgba(193,104,76,0.03)'">
+                    <div
+                        style="width:52px; height:52px; border:1px solid rgba(193,104,76,0.3); border-radius:2px; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem;">
+                        <i class="fa fa-plus" style="color:#C1684C; font-size:18px;"></i>
+                    </div>
+                    <h3 class="font-display"
+                        style="font-size:1.35rem; font-weight:400; color:#3B2B1F; margin-bottom:6px;">Add a Package</h3>
+                    <p
+                        style="font-size:12px; color:#B8956A; font-weight:300; line-height:1.7; max-width:200px; margin-bottom:1.5rem;">
+                        Define your services, pricing, and what clients can expect.
+                    </p>
+                    <a href="/packages/create/" class="btn-primary">
+                        <i class="fa fa-plus"></i> Create Package
+                    </a>
+                </div>
+
+            </div><!-- /grid -->
+
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-10 pt-8"
+                style="border-top:1px solid rgba(184,149,106,0.2);">
+                <span style="font-size:11px; color:#B8956A; letter-spacing:0.06em;">Showing 1–6 of 6 packages</span>
+                <div class="flex gap-2">
+                    <button class="filter-tab" disabled style="opacity:0.4; cursor:not-allowed;"><i
+                            class="fa fa-chevron-left"></i></button>
+                    <button class="filter-tab active">1</button>
+                    <button class="filter-tab" disabled style="opacity:0.4; cursor:not-allowed;"><i
+                            class="fa fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<!-- Filter tab JS -->
+<script>
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        if (tab.disabled) return;
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+
+{% endblock content %}

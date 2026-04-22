@@ -1,0 +1,478 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    cream: '#F5F0E8',
+                    parchment: '#EDE5D4',
+                    sand: '#D9CABA',
+                    terracotta: '#C1684C',
+                    espresso: '#3B2B1F',
+                    'deep-espresso': '#2A1E15',
+                    bark: '#7A5C3E',
+                    clay: '#B8956A',
+                    moss: '#6B7A5E',
+                    sage: '#9DAF8E',
+                },
+                fontFamily: {
+                    display: ['Cormorant Garamond', 'serif'],
+                    body: ['Jost', 'sans-serif'],
+                },
+                borderRadius: { DEFAULT: '2px', sm: '2px', md: '2px', lg: '2px', xl: '2px', '2xl': '2px', full: '9999px' },
+            }
+        }
+    }
+</script>
+<style>
+    *,
+    *::before,
+    *::after {
+        font-family: 'Jost', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .font-display {
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    body {
+        background-color: #F5F0E8;
+        color: #3B2B1F;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.03;
+    }
+
+    .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Jost', sans-serif;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #7A5C3E;
+    }
+
+    .section-tag::before {
+        content: '';
+        display: block;
+        width: 28px;
+        height: 1.5px;
+        background: #C1684C;
+    }
+
+    .card-border {
+        border: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .pkg-card {
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pkg-card:hover {
+        box-shadow: 0 12px 40px rgba(59, 43, 31, 0.12), 0 2px 8px rgba(59, 43, 31, 0.06);
+        transform: translateY(-3px);
+    }
+
+    .pkg-card.inactive {
+        opacity: 0.6;
+    }
+
+    .pkg-card.inactive::after {
+        content: 'INACTIVE';
+        position: absolute;
+        top: 14px;
+        right: -22px;
+        background: #7A5C3E;
+        color: #F5F0E8;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        padding: 3px 28px;
+        transform: rotate(45deg);
+        font-family: 'Jost', sans-serif;
+    }
+
+    .discount-badge {
+        background: #C1684C;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        padding: 3px 10px;
+        border-radius: 2px;
+        text-transform: uppercase;
+    }
+
+    .price-original {
+        text-decoration: line-through;
+        color: #B8956A;
+        font-size: 0.85rem;
+    }
+
+    .price-final {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 500;
+        color: #3B2B1F;
+        line-height: 1;
+    }
+
+    .meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(184, 149, 106, 0.12);
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 400;
+        color: #7A5C3E;
+        letter-spacing: 0.04em;
+    }
+
+    .meta-pill i {
+        color: #B8956A;
+        font-size: 10px;
+    }
+
+    .btn-primary {
+        background: #C1684C;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 2px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-primary:hover {
+        background: #a8563c;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: #3B2B1F;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 2px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-secondary:hover {
+        background: #2A1E15;
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: #7A5C3E;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 9px 18px;
+        border-radius: 2px;
+        border: 1px solid rgba(184, 149, 106, 0.35);
+        cursor: pointer;
+        transition: border-color 0.2s, color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-ghost:hover {
+        border-color: #C1684C;
+        color: #C1684C;
+    }
+
+    .divider {
+        border: none;
+        border-top: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .pkg-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #3B2B1F;
+    }
+
+    .empty-state {
+        background: #EDE5D4;
+        border: 1px dashed rgba(184, 149, 106, 0.4);
+        border-radius: 2px;
+        text-align: center;
+        padding: 5rem 2rem;
+    }
+
+    .filter-tab {
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 7px 16px;
+        border-radius: 2px;
+        cursor: pointer;
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        color: #7A5C3E;
+        background: transparent;
+        transition: all 0.2s;
+    }
+
+    .filter-tab.active,
+    .filter-tab:hover {
+        background: #3B2B1F;
+        color: #F5F0E8;
+        border-color: #3B2B1F;
+    }
+
+    .accessories-list {
+        font-size: 12px;
+        color: #7A5C3E;
+        line-height: 1.8;
+    }
+
+    .accessories-list li::before {
+        content: '—';
+        margin-right: 6px;
+        color: #C1684C;
+    }
+
+    .countdown {
+        font-size: 10px;
+        color: #C1684C;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+    }
+
+    /* Dropdown action menu */
+    .action-menu {
+        position: relative;
+    }
+
+    .action-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 6px);
+        z-index: 50;
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.3);
+        border-radius: 2px;
+        min-width: 150px;
+        box-shadow: 0 8px 24px rgba(59, 43, 31, 0.12);
+    }
+
+    .action-menu:hover .action-dropdown {
+        display: block;
+    }
+
+    .action-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 14px;
+        font-size: 12px;
+        color: #3B2B1F;
+        text-decoration: none;
+        letter-spacing: 0.04em;
+        transition: background 0.15s;
+    }
+
+    .action-dropdown a:hover {
+        background: rgba(193, 104, 76, 0.08);
+        color: #C1684C;
+    }
+
+    .action-dropdown a.danger:hover {
+        background: rgba(193, 104, 76, 0.08);
+        color: #c0392b;
+    }
+
+    .action-dropdown a i {
+        width: 14px;
+        font-size: 12px;
+    }
+
+    /* Stats bar */
+    .stat-block {
+        border-right: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .stat-block:last-child {
+        border-right: none;
+    }
+</style>
+
+{% endblock extra_head %}
+
+{% block content %}
+<section class="pt-32 pb-24 max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
+
+    <!-- LEFT: PACKAGE CARD -->
+    <div>
+        <div class="pkg-card {% if package.active == 0 %} inactive {% endif %}">
+
+            <div style="height:3px; background: linear-gradient(90deg, #C1684C, transparent);"></div>
+
+            <div class="p-6">
+
+                <!-- Header -->
+                <div class="flex items-start justify-between gap-2 mb-4">
+                    <div>
+                        <span class="discount-badge">{{ package.discount_text }}</span>
+                        <h3 class="pkg-name mt-2">{{ package.name }}</h3>
+                    </div>
+                </div>
+
+                <!-- Meta -->
+                <div class="flex flex-wrap gap-2 mb-5">
+                    <span class="meta-pill"><i class="fa fa-calendar"></i> {{ package.duration }}</span>
+                    <span class="meta-pill"><i class="fa fa-camera"></i> {{ package.no_of_cameras }} Cameras</span>
+                    <span class="meta-pill"><i class="fa fa-users"></i> {{ package.no_of_staffs }} Staff</span>
+
+                    {% if package.drone_included %}
+                    <span class="meta-pill text-[#6B7A5E]">
+                        <i class="fa fa-plane"></i> Drone Included
+                    </span>
+                    {% endif %}
+                </div>
+
+                <hr class="divider mb-4" />
+
+                <!-- Accessories -->
+                <div class="mb-4">
+                    <p class="text-[10px] tracking-widest uppercase text-[#B8956A] mb-2">
+                        Free Accessories
+                    </p>
+                    <ul class="accessories-list list-none">
+                        {% for accessory in package.free_accessories_list %}
+                        <li>{{ accessory }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <hr class="divider mb-4" />
+
+                <!-- Pricing -->
+                <div class="flex justify-between items-end">
+                    <div>
+                        <div class="price-original">{{ currency_display_text }} {{ package.price }}</div>
+                        <div class="price-final">{{ currency_display_text }} {{ package.final_price }}</div>
+                        <div class="text-[10px] text-[#6B7A5E] mt-1">
+                            You save {{ currency_display_text }} {{ package.discount }}
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <div class="text-[10px] uppercase tracking-widest text-[#B8956A]">Delivery</div>
+                        <div class="text-lg font-serif">{{ package.delivery_time }} Days</div>
+                    </div>
+                </div>
+
+                <div class="countdown mt-3">
+                    <i class="fa fa-clock-o"></i> Offer ends {{ package.discount_end_date }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: FORM -->
+    <div>
+
+        <div class="mb-10">
+            <span class="section-tag mb-4">Booking</span>
+            <h1 class="text-4xl">Reserve Package</h1>
+            <p class="text-[#7A5C3E] mt-2">Fill in your details to request a booking</p>
+        </div>
+
+        <form method="POST" class="space-y-8">
+            {% csrf_token %}
+
+            <div class="p-8 bg-[#EDE5D4] border border-[#B8956A]/20 space-y-6">
+
+                <span class="section-tag">Your Details</span>
+
+                <div>
+                    <label class="form-label">Full Name</label>
+                    {{ form.fullname }}
+                    {{ form.fullname.errors }}
+                </div>
+
+                <div>
+                    <label class="form-label">Email</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+
+                <div>
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone_number }}
+                    {{ form.phone_number.errors }}
+                </div>
+
+                <div>
+                    <label class="form-label">Booking Date</label>
+                    {{ form.start_date }}
+                    {{ form.start_date.errors }}
+                </div>
+
+            </div>
+
+            <div>
+                <button type="submit" class="w-full px-10 py-3 bg-[#C1684C] text-white">
+                    Request Booking
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+{% endblock content %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from accounts.models import Profile, Speciality
+from main.models import Package
 from django.db.models import Count, Q
 from django.contrib import messages
 
@@ -10,6 +11,8 @@ from django.contrib import messages
 # http://localhost:8000/?speciality=corporate&max_price=5000
 def home(request):
     photographers = Profile.objects.filter(kyc_verified="verified", email_verified="verified")
+    packages = Package.objects.filter(active=True)
+    
     speciality_slug = request.GET.get('speciality')
     
     # filter by speiciality
@@ -38,7 +41,8 @@ def home(request):
     )
     context = {
         'photographers': photographers,
-        'specialities': specialities
+        'specialities': specialities,
+        'packages': packages
     }
     
     return render(request, "main/home.html", context)

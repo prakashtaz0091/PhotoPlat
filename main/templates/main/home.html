@@ -1,5 +1,328 @@
 {% extends "main/base.html" %}
 
+{% block extra_head %}
+<style>
+    *,
+    *::before,
+    *::after {
+        font-family: 'Jost', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .font-display {
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    body {
+        background-color: #F5F0E8;
+        color: #3B2B1F;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.03;
+    }
+
+    .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Jost', sans-serif;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #7A5C3E;
+    }
+
+    .section-tag::before {
+        content: '';
+        display: block;
+        width: 28px;
+        height: 1.5px;
+        background: #C1684C;
+    }
+
+    .card-border {
+        border: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .pkg-card {
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pkg-card:hover {
+        box-shadow: 0 12px 40px rgba(59, 43, 31, 0.12), 0 2px 8px rgba(59, 43, 31, 0.06);
+        transform: translateY(-3px);
+    }
+
+    .pkg-card.inactive {
+        opacity: 0.6;
+    }
+
+    .pkg-card.inactive::after {
+        content: 'INACTIVE';
+        position: absolute;
+        top: 14px;
+        right: -22px;
+        background: #7A5C3E;
+        color: #F5F0E8;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        padding: 3px 28px;
+        transform: rotate(45deg);
+        font-family: 'Jost', sans-serif;
+    }
+
+    .discount-badge {
+        background: #C1684C;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        padding: 3px 10px;
+        border-radius: 2px;
+        text-transform: uppercase;
+    }
+
+    .price-original {
+        text-decoration: line-through;
+        color: #B8956A;
+        font-size: 0.85rem;
+    }
+
+    .price-final {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 500;
+        color: #3B2B1F;
+        line-height: 1;
+    }
+
+    .meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(184, 149, 106, 0.12);
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 400;
+        color: #7A5C3E;
+        letter-spacing: 0.04em;
+    }
+
+    .meta-pill i {
+        color: #B8956A;
+        font-size: 10px;
+    }
+
+    .btn-primary {
+        background: #C1684C;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 2px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-primary:hover {
+        background: #a8563c;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: #3B2B1F;
+        color: #F5F0E8;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 10px 22px;
+        border-radius: 2px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-secondary:hover {
+        background: #2A1E15;
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: #7A5C3E;
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 9px 18px;
+        border-radius: 2px;
+        border: 1px solid rgba(184, 149, 106, 0.35);
+        cursor: pointer;
+        transition: border-color 0.2s, color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .btn-ghost:hover {
+        border-color: #C1684C;
+        color: #C1684C;
+    }
+
+    .divider {
+        border: none;
+        border-top: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .pkg-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #3B2B1F;
+    }
+
+    .empty-state {
+        background: #EDE5D4;
+        border: 1px dashed rgba(184, 149, 106, 0.4);
+        border-radius: 2px;
+        text-align: center;
+        padding: 5rem 2rem;
+    }
+
+    .filter-tab {
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 7px 16px;
+        border-radius: 2px;
+        cursor: pointer;
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        color: #7A5C3E;
+        background: transparent;
+        transition: all 0.2s;
+    }
+
+    .filter-tab.active,
+    .filter-tab:hover {
+        background: #3B2B1F;
+        color: #F5F0E8;
+        border-color: #3B2B1F;
+    }
+
+    .accessories-list {
+        font-size: 12px;
+        color: #7A5C3E;
+        line-height: 1.8;
+    }
+
+    .accessories-list li::before {
+        content: '—';
+        margin-right: 6px;
+        color: #C1684C;
+    }
+
+    .countdown {
+        font-size: 10px;
+        color: #C1684C;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+    }
+
+    /* Dropdown action menu */
+    .action-menu {
+        position: relative;
+    }
+
+    .action-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 6px);
+        z-index: 50;
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.3);
+        border-radius: 2px;
+        min-width: 150px;
+        box-shadow: 0 8px 24px rgba(59, 43, 31, 0.12);
+    }
+
+    .action-menu:hover .action-dropdown {
+        display: block;
+    }
+
+    .action-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 14px;
+        font-size: 12px;
+        color: #3B2B1F;
+        text-decoration: none;
+        letter-spacing: 0.04em;
+        transition: background 0.15s;
+    }
+
+    .action-dropdown a:hover {
+        background: rgba(193, 104, 76, 0.08);
+        color: #C1684C;
+    }
+
+    .action-dropdown a.danger:hover {
+        background: rgba(193, 104, 76, 0.08);
+        color: #c0392b;
+    }
+
+    .action-dropdown a i {
+        width: 14px;
+        font-size: 12px;
+    }
+
+    /* Stats bar */
+    .stat-block {
+        border-right: 1px solid rgba(184, 149, 106, 0.2);
+    }
+
+    .stat-block:last-child {
+        border-right: none;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+{% endblock extra_head %}
+
 {% block content %}
 <!-- ====== HERO ====== -->
 <section class="hero">
@@ -183,7 +506,7 @@
 
             {% for photographer in photographers %}
             <!-- Card 1 -->
-            <div class="photographer-card">
+            <a href="{% url 'public_profile_page' photographer.id %}" class="photographer-card">
                 <div class="card-image">
                     <img src="{{ photographer.profile_photo.url }}" alt="Photographer Aarav Shrestha" />
                     <div class="card-badge">Top Rated</div>
@@ -217,8 +540,112 @@
                         <button class="card-book-btn">Book Now</button>
                     </div>
                 </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ====== PACKAGES LISTINGS ====== -->
+<section class="listings-section">
+    <div class="listings-inner">
+        <div class="listings-header">
+            <div>
+                <div class="section-tag">Top Booked Packages</div>
+                <h2 class="section-title">Featured <em>Packages</em></h2>
+            </div>
+            <a href="#" class="offers-view-all" style="color:#7A5C3E; border-color:rgba(122,92,62,0.3);">
+                Browse All <i class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+
+
+
+        <div class="photographers-grid">
+
+            {% for package in packages %}
+            <!-- ===== PACKAGE CARD 1 — Premium Wedding ===== -->
+            <div class="pkg-card {% if package.active == 0 %} inactive {% endif %} ">
+                <!-- Top accent line -->
+                <div style="height:3px; background: linear-gradient(90deg, #C1684C, transparent);"></div>
+                <div class="p-6">
+                    <!-- Header -->
+                    <div class="flex items-start justify-between gap-2 mb-4">
+                        <div>
+                            <span class="discount-badge">{{ package.discount_text }}</span>
+                            <h3 class="pkg-name mt-2"> {{ package.name }} </h3>
+                        </div>
+                        <div class="action-menu">
+                            <button class="btn-ghost" style="padding:7px 12px;">
+                                <i class="fa fa-ellipsis-v"></i>
+                            </button>
+                            <div class="action-dropdown">
+                                <a href="#"><i class="fa fa-pencil"></i> Edit</a>
+                                <a href="#"><i class="fa fa-toggle-on"></i> Deactivate</a>
+                                <a href="#" class="danger"><i class="fa fa-trash"></i> Delete</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meta pills -->
+                    <div class="flex flex-wrap gap-2 mb-5">
+                        <span class="meta-pill"><i class="fa fa-calendar"></i> {{ package.duration }} </span>
+                        <span class="meta-pill"><i class="fa fa-camera"></i> {{ package.no_of_cameras }}
+                            Cameras</span>
+                        <span class="meta-pill"><i class="fa fa-users"></i> {{ package.no_of_staffs }} Staff</span>
+
+                        {% if package.drone_included %}
+                        <span class="meta-pill" style="color:#6B7A5E;"><i class="fa fa-plane"
+                                style="color:#6B7A5E;"></i> Drone Included</span>
+                        {% endif %}
+                    </div>
+
+                    <hr class="divider mb-4" />
+
+                    <!-- Accessories -->
+                    <div class="mb-4">
+                        <p
+                            style="font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#B8956A; margin-bottom:6px;">
+                            Free Accessories</p>
+                        <ul class="accessories-list list-none">
+                            {% for accessory in package.free_accessories_list %}
+                            <li>{{accessory}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <hr class="divider mb-4" />
+
+                    <!-- Pricing -->
+                    <div class="flex items-end justify-between gap-2 mb-1">
+                        <div>
+                            <div class="price-original"> {{ currency_display_text }} {{ package.price }} </div>
+                            <div class="price-final"> {{ currency_display_text }} {{ package.final_price}} </div>
+                            <div style="font-size:10px; color:#6B7A5E; margin-top:3px; letter-spacing:0.04em;">You
+                                save {{ currency_display_text }} {{ package.discount }}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#B8956A;">
+                                Delivery</div>
+                            <div
+                                style="font-size:1.1rem; font-family:'Cormorant Garamond',serif; color:#3B2B1F; font-weight:500;">
+                                {{ package.delivery_time }} Days</div>
+                        </div>
+                    </div>
+                    <div class="countdown mt-2"><i class="fa fa-clock-o"></i> Offer ends
+                        {{package.discount_end_date}}</div>
+                </div>
+                <!-- Footer -->
+                <div
+                    style="background:rgba(184,149,106,0.07); border-top:1px solid rgba(184,149,106,0.2); padding:12px 20px; display:flex; gap:8px; justify-content:flex-end;">
+
+                    <a href="{% url 'create_booking' package.id %}" class="btn-secondary"
+                        style="font-size:10px; padding:7px 14px;"><i class="fa fa-pencil"></i> Book</a>
+                </div>
             </div>
             {% endfor %}
+
+
         </div>
     </div>
 </section>

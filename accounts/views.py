@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .admin import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -7,6 +7,14 @@ from accounts.forms import ProfileForm
 from django.http import JsonResponse
 from django.templatetags.static import static
 
+
+def photographer_profile(request, profile_id):
+    # Fetch profile based on profile id
+    profile = get_object_or_404(Profile, pk=profile_id)
+    context = {
+        'profile': profile,
+    }
+    return render(request, 'accounts/public-profile.html', context)
 
 def remove_profile_photo(request):
     try:

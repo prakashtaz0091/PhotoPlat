@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 
 
 class Booking(models.Model):
@@ -43,6 +43,9 @@ class Booking(models.Model):
     def free_accessories_list(self):
         return self.free_accessories.split(sep=",")
     
+    @property
+    def is_shooting_completed(self):
+        return date.today() > self.end_date    
     
     def __str__(self):
         return f"{self.name} Booking"

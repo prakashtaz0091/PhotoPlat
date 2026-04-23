@@ -1,6 +1,6 @@
 from django import forms
 from bookings.models import Booking
-
+from datetime import date, timedelta
 
 class BookingForm(forms.ModelForm):
 
@@ -32,6 +32,15 @@ class BookingForm(forms.ModelForm):
                 "class": "form-input"
             }),
         }
+          
+    def clean_start_date(self):
+        start_date = self.cleaned_data.get("start_date")
+        today = date.today()
+        gap = start_date - today
+        if not gap >= timedelta(2):
+            raise forms.ValidationError("You must be requesting booking date at least two days ago")
+        
+        return start_date
 
     def clean_phone_number(self):
         phone = self.cleaned_data.get("phone_number")

@@ -987,6 +987,7 @@
                 {% if not request.user.is_authenticated %}
                 <a href="{% url 'login_page' %}">For Photographers</a>
                 {% else %}
+                <a href="{% url 'list_booking_page' %}">Bookings</a>
                 <a href="{% url 'packages_page' %}">Packages</a>
                 <a href="{% url 'profile_page' %}" class="nav-cta">Profile</a>
 

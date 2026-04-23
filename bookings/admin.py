@@ -6,3 +6,4 @@ class BookingAdmin(admin.ModelAdmin):
     list_display = ["name", "fullname","phone_number", "email", "final_price", "status"]
     search_fields = ["name", "fullname", "phone_number"]
     list_filter = ["email"]
+    list_editable = ["status"]

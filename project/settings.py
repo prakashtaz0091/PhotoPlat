@@ -133,3 +133,12 @@ MEDIA_URL = '/media/'
 # file size
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024*1024  # 1 MB in bytes
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024*1024  # 1 MB in bytes
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'code.ing2468@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'qvreccowmvmxhxdi'  # Use an App Password, not your login password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

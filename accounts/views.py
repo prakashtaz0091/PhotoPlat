@@ -2,12 +2,52 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .admin import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .models import Profile
+from .models import Profile, EmailVerifyOTP
 from accounts.forms import ProfileForm
 from django.http import JsonResponse
 from django.templatetags.static import static
+from django.core.mail import send_mail
+from django.conf import settings
+from accounts.services import send_welcome_email, send_otp_to_user
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
+
+@login_required
+def verify_email_otp(request):
+    if request.method == "POST":
+        otp_from_form = request.POST.get("otp")
+        try:
+            otp_from_db = EmailVerifyOTP.objects.get(user=request.user, otp=otp_from_form)
+        except EmailVerifyOTP.DoesNotExist:
+            messages.error(request, "OTP check failed, please request new otp and continue")
+        else:
+            if otp_from_db.is_expired:
+                messages.error(request, "OTP is expired. Please follow the process again.")
+            else:
+                Profile.objects.filter(user=request.user).update(
+                    email_verified=Profile.EMAIL_STATUS.VERIFIED
+                    )
+                otp_from_db.delete()
+                messages.success(request, "Email verified successfully.")
+        
+        return redirect("profile_page")
+            
+    return render(request, "accounts/verify-email-otp.html")
+
+@login_required
+def verify_email_form(request):
+    
+    if request.method == "POST":
+        # otp generate and send
+        otp_verify_url = request.build_absolute_uri(reverse("verify_email_otp_page"))
+        send_otp_to_user(request.user, verify_url=otp_verify_url)
+        return redirect("verify_email_otp_page")
+    
+    return render(request, "accounts/verify-email.html")
+
+@login_required
 def photographer_profile(request, profile_id):
     # Fetch profile based on profile id
     profile = get_object_or_404(Profile, pk=profile_id)
@@ -16,6 +56,7 @@ def photographer_profile(request, profile_id):
     }
     return render(request, 'accounts/public-profile.html', context)
 
+@login_required
 def remove_profile_photo(request):
     try:
         profile = request.user.profile
@@ -31,7 +72,7 @@ def remove_profile_photo(request):
             "default_url": static("accounts/images/default-profile-pic.png")
         })
     
-
+@login_required
 def upload_profile_photo(request):
     if request.method == "POST":
         if len(request.FILES) != 1:
@@ -51,12 +92,19 @@ def upload_profile_photo(request):
             "message": "Profile photo uploaded successfully"
         })
 
-
+@login_required
 def submit_kyc(request):
     if request.method == "POST":
         submitted_form = ProfileForm(request.POST, request.FILES, request=request)
         if submitted_form.is_valid():
             submitted_form.save()
+            # send notification mail to user
+            subject = "KYC submission"
+            message = "We have successfully received KYC verification request. Please wait 1-2 business days to get verified or any response."
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [request.user.email]
+            send_mail(subject, message, from_email, recipient_list)
+            
             return redirect("profile_page")
         else:
             context = {
@@ -65,6 +113,7 @@ def submit_kyc(request):
             return render(request, "accounts/profile.html", context)
         
 
+@login_required
 def profile_view(request):
     if request.user.profile is not None:
         form = ProfileForm(instance=request.user.profile, request=request)
@@ -75,6 +124,7 @@ def profile_view(request):
     }
     return render(request, "accounts/profile.html", context)
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect("login_page")
@@ -115,6 +165,14 @@ def register(request):
                 user = registered_user
             )
             messages.success(request, "Registration successful. Please login and complete the verification process")
+            
+            # send notification mail to user
+            send_welcome_email(
+                [registered_user.email], 
+                profile_url=request.build_absolute_uri(reverse("profile_page"))
+                )
+            
+            return redirect("login_page")
         else:
             print("-----------No it's not valid")
             

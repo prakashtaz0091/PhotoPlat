@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.db import models
-from accounts.models import MyUser, Profile, Speciality
+from accounts.models import MyUser, Profile, Speciality, EmailVerifyOTP
 
 
 class UserCreationForm(forms.ModelForm):
@@ -136,3 +136,7 @@ admin.site.register(Profile, ProfileAdmin)
 
 
 admin.site.register(Speciality)
+
+@admin.register(EmailVerifyOTP)
+class EmailVerifyOTPAdmin(admin.ModelAdmin):
+    list_display = ("user", "otp")

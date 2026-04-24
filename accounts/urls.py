@@ -10,4 +10,7 @@ urlpatterns = [
     path("submit-kyc/", views.submit_kyc, name="submit_kyc_page"),
     path("profile-photo/upload/", views.upload_profile_photo, name="upload_profile_photo_page"),
     path("profile-photo/delete/", views.remove_profile_photo, name="remove_profile_photo_page"),
+    path("email/verify-form/", views.verify_email_form, name="verify_email_form_page"),
+    path("email/verify-otp/", views.verify_email_otp, name="verify_email_otp_page"),
+    
 ]

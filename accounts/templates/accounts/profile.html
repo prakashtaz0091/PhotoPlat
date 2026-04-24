@@ -743,9 +743,9 @@
                                     booking notifications until your email is verified.</p>
                             </div>
                         </div>
-                        <button class="btn-primary" onclick="sendVerificationEmail()">
-                            <i class="fa fa-envelope"></i> Send Verification Link
-                        </button>
+                        <a href="{% url 'verify_email_form_page' %}" class="btn-primary">
+                            <i class="fa fa-envelope"></i> Verify Now
+                        </a>
                     </div>
                     {% endif %}
                 </div>

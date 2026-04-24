@@ -1,0 +1,222 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    body {
+        font-family: 'Jost', sans-serif;
+    }
+
+    .grain-bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 200px;
+    }
+
+    .section-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-label::before {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: #C1684C;
+    }
+
+    .booking-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .booking-table thead {
+        background: #2A1E15;
+    }
+
+    .booking-table th {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #B8956A;
+        padding: 13px 14px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .booking-table td {
+        padding: 12px 14px;
+        font-size: 13px;
+        color: #3B2B1F;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(184, 149, 106, 0.18);
+    }
+
+    .booking-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .booking-table tbody tr:hover {
+        background: #D9CABA;
+        transition: background 0.15s;
+    }
+
+    .badge {
+        display: inline-flex;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 9px;
+        border-radius: 2px;
+        white-space: nowrap;
+    }
+
+    .badge-requested {
+        background: rgba(186, 117, 23, 0.12);
+        color: #BA7517;
+        border: 1px solid rgba(186, 117, 23, 0.2);
+    }
+
+    .badge-accepted {
+        background: rgba(59, 109, 17, 0.1);
+        color: #3B6D11;
+        border: 1px solid rgba(59, 109, 17, 0.2);
+    }
+
+    .badge-rejected {
+        background: rgba(163, 45, 45, 0.1);
+        color: #A32D2D;
+        border: 1px solid rgba(163, 45, 45, 0.15);
+    }
+
+    .badge-delivered {
+        background: rgba(107, 122, 94, 0.12);
+        color: #3B5030;
+        border: 1px solid rgba(107, 122, 94, 0.25);
+    }
+
+    .btn-action {
+        font-family: 'Jost', sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        padding: 6px 12px;
+        border-radius: 2px;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn-action:hover {
+        opacity: 0.85;
+    }
+
+    .btn-action:active {
+        transform: scale(0.97);
+    }
+
+    .btn-view {
+        background: #3B2B1F;
+        color: #EDE5D4;
+    }
+
+    .btn-accept {
+        background: #6B7A5E;
+        color: #fff;
+    }
+
+    .btn-reject {
+        background: transparent;
+        color: #C1684C;
+        border: 1px solid rgba(193, 104, 76, 0.45);
+    }
+
+    .btn-reject:hover {
+        background: rgba(193, 104, 76, 0.07);
+    }
+
+    .stat-card {
+        background: #EDE5D4;
+        border: 1px solid rgba(184, 149, 106, 0.2);
+        border-radius: 2px;
+        padding: 0.85rem 1.1rem;
+    }
+
+    .stat-card.accent {
+        border-left: 2px solid #C1684C;
+    }
+
+    .stat-num {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.7rem;
+        font-weight: 600;
+        color: #3B2B1F;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #7A5C3E;
+        margin-top: 3px;
+    }
+
+    .price {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .meta-text {
+        font-size: 11px;
+        color: #7A5C3E;
+        margin-top: 2px;
+    }
+</style>
+
+<div class="grain-bg"></div>
+
+<div class="relative z-10 min-h-[70vh] flex justify-center"
+    style="background:#F5F0E8; padding:3rem 2rem;margin-top: 2rem;">
+    <div>
+        <div class="section-label" style="margin-bottom:1rem;">
+            <p
+                style="font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#C1684C; margin:0;">
+                Email verification</p>
+        </div>
+        <h1
+            style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; color:#3B2B1F; margin:0 0 0.25rem;">
+            Verify your email to get whitelisted</h1>
+        <p style="font-size:13px; color:#7A5C3E; font-weight:300; margin:0 0 2rem;">
+            OTP will be sent to this email. {{request.user.email}}
+        </p>
+
+        <div class="flex gap-2">
+            <form method="POST" action="" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="btn-action btn-accept">
+                    <i class="fa fa-check" style="margin-right:4px;"></i> Send OTP
+                </button>
+            </form>
+            <a href="{% url 'profile_page' %}" class="btn-action btn-reject">
+                <i class="fa fa-times" style="margin-right:4px;"></i> This is not my Email. Cancel
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

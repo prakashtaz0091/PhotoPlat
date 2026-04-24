@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Group, PermissionsMixin
 from main.validators import validate_file_size
 from django.utils.text import slugify
+from datetime import timedelta
+from django.utils import timezone
+
 
 
 class MyUserManager(BaseUserManager):
@@ -120,4 +123,18 @@ class Profile(models.Model):
     
     def __str__(self):
         return f"{self.user.email}'s profile"
+
+
+class EmailVerifyOTP(models.Model):
+    user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name="otp")
+    otp = models.CharField(max_length=10)
+    
+    created_at = models.DateTimeField(auto_now=True)
+    
+    @property
+    def is_expired(self):
+        return timezone.now() - self.created_at > timedelta(minutes=10)
+    
+    def __str__(self):
+        return f"{self.user} - {self.otp}"
     

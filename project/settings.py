@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "main.middlewares.RequestMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -140,5 +141,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'code.ing2468@gmail.com'  # Your Gmail address
-EMAIL_HOST_PASSWORD = 'qvreccowmvmxhxdi'  # Use an App Password, not your login password
+EMAIL_HOST_PASSWORD = 'dweyzszkkswytdqx'  # Use an App Password, not your login password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

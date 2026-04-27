@@ -5,6 +5,7 @@ from bookings.models import Booking
 from django.db.models import Q
 from datetime import timedelta
 from django.contrib import messages
+from . import signals
 
 
 def confirm_accept_booking(request, booking_id):

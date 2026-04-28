@@ -11,7 +11,7 @@ from django.conf import settings
 from accounts.services import send_welcome_email, send_otp_to_user
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+from .tasks import notify_for_kyc_submission, notify_otp_for_email_verification
 
 
 @login_required
@@ -42,7 +42,7 @@ def verify_email_form(request):
     if request.method == "POST":
         # otp generate and send
         otp_verify_url = request.build_absolute_uri(reverse("verify_email_otp_page"))
-        send_otp_to_user(request.user, verify_url=otp_verify_url)
+        notify_otp_for_email_verification(user_email=request.user.email, verify_url=otp_verify_url)
         return redirect("verify_email_otp_page")
     
     return render(request, "accounts/verify-email.html")
@@ -98,13 +98,7 @@ def submit_kyc(request):
         submitted_form = ProfileForm(request.POST, request.FILES, request=request)
         if submitted_form.is_valid():
             submitted_form.save()
-            # send notification mail to user
-            subject = "KYC submission"
-            message = "We have successfully received KYC verification request. Please wait 1-2 business days to get verified or any response."
-            from_email = settings.DEFAULT_FROM_EMAIL
-            recipient_list = [request.user.email]
-            send_mail(subject, message, from_email, recipient_list)
-            
+            notify_for_kyc_submission(user_email=request.user.email) # saves tasks metadata in task table in db
             return redirect("profile_page")
         else:
             context = {

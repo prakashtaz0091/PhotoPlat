@@ -22,6 +22,7 @@ class Booking(models.Model):
     final_price = models.DecimalField(max_digits=10, decimal_places=2)
     start_date = models.DateField(help_text="Booking date", null=True)
     end_date = models.DateField(editable=False, null=True)
+    rejection_reason = models.TextField(null=True, blank=True)
 
     
     # booked package specific snapshot fields

@@ -5,7 +5,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from main.middlewares import get_current_request
 from django.urls import reverse
-
+from .tasks import notify_booking_update_task
 
 BOOKING_REQUEST_TEMPLATE = """
     <!DOCTYPE html>
@@ -232,12 +232,5 @@ def notify_booking_update(sender, instance, created, **kwargs):
             instance.get_status_display()
             ) 
         to = [instance.email]
-        
-    email = EmailMessage(
-        subject="Booking Information",
-        body=message,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=to, # booking created ? -> photographer else client
-    )
-    email.content_subtype = "html"  # Main content is now text/html
-    email.send()
+    print("Message prepared to notify for booking")
+    notify_booking_update_task(to_email=to, message=message)

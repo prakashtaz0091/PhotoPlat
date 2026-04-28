@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "main",
     "accounts",
     "packages",
-    "bookings"
+    "bookings",
+    "background_task",
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'code.ing2468@gmail.com'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'dweyzszkkswytdqx'  # Use an App Password, not your login password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+AUTO_REJECT_BOOKINGS_INTERVAL = 10 # in seconds

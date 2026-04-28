@@ -3,6 +3,7 @@ from accounts.models import Profile, Speciality
 from main.models import Package
 from django.db.models import Count, Q
 from django.contrib import messages
+from bookings.tasks import auto_reject_old_bookings
 
 
 # http://127.0.0.1:8000
@@ -10,6 +11,7 @@ from django.contrib import messages
 # http://127.0.0.1:8000/?category=wedding
 # http://localhost:8000/?speciality=corporate&max_price=5000
 def home(request):
+    auto_reject_old_bookings(repeat=5)
     photographers = Profile.objects.filter(kyc_verified="verified", email_verified="verified")
     packages = Package.objects.filter(active=True)
     

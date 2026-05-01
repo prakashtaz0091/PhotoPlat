@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "packages",
     "bookings",
     "background_task",
+    "subscriptions"
 ]
 
 MIDDLEWARE = [

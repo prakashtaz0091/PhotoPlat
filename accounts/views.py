@@ -12,6 +12,7 @@ from accounts.services import send_welcome_email, send_otp_to_user
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .tasks import notify_for_kyc_submission, notify_otp_for_email_verification
+from subscriptions.models import Subscription
 
 
 @login_required
@@ -111,11 +112,22 @@ def submit_kyc(request):
 def profile_view(request):
     if request.user.profile is not None:
         form = ProfileForm(instance=request.user.profile, request=request)
+        user_subscription = request.user.subscriptions.filter(active=1).first()
+        free_trial = Subscription.objects.get(type__icontains="free")
+        free_trial_done = request.user.subscriptions.filter(subscription=free_trial)  
+        subscription_plans = Subscription.objects.all()
+        if free_trial_done:
+            subscription_plans = subscription_plans.exclude(id=free_trial.id)
+        context = {
+            "profile_form": form,
+            "user_subscription": user_subscription,
+            "subscription_plans": subscription_plans
+        }
     else:
         form = ProfileForm(request=request)
-    context = {
-        "profile_form": form
-    }
+        context = {
+            "profile_form": form,
+        }
     return render(request, "accounts/profile.html", context)
 
 @login_required

@@ -928,23 +928,93 @@
             </div>
         </div>
 
-        <!-- LOGOUT CARD -->
-        <div class="card" style="background:var(--deep-espresso);border-color:rgba(193,104,76,0.15);">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
-                <div>
-                    <div class="section-tag header-tag"><span>Session</span></div>
-                    <h2 style="font-size:1.2rem;font-weight:500;color:var(--cream);margin-bottom:0.25rem;">Sign Out
-                    </h2>
-                    <p style="font-size:0.8rem;color:rgba(184,149,106,0.75);">End your current session. You'll need
-                        to sign in again to access your account.</p>
+
+
+    </div>
+    <!-- SUBSCRIPTIONS CARD -->
+    <div class="card" style="margin-top: 2rem;" id="subscriptionCard">
+        <div class="section-tag"><span>Subscription</span></div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+            <div style="flex:1;min-width:0;">
+                <h2 style="font-size:1.35rem;font-weight:500;color:var(--espresso);margin-bottom:0.25rem;">Your Plan
+                </h2>
+                <p style="font-size:0.82rem;color:var(--bark);margin-bottom:1rem;">An active subscription lets
+                    guests book your
+                    space and unlocks all host features.</p>
+
+                {% if user_subscription and user_subscription.active %}
+
+                <!-- ACTIVE STATE -->
+                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+                    <span style="font-size:0.9rem;font-weight:500;color:var(--espresso);">
+                        {{ user_subscription.subscription.type }}</span>
+                    <span class="badge badge-verified" id="subBadge"><i class="fa fa-check-circle"></i>
+                        Active</span>
                 </div>
-                <button class="btn-danger" onclick="showLogoutModal()"
-                    style="border-color:rgba(192,57,43,0.4);color:#e07070;">
-                    <i class="fa fa-sign-out"></i> Logout
-                </button>
+
+                <div
+                    style="display:flex;align-items:center;gap:0.6rem;padding:0.85rem;background:rgba(107,122,94,0.08);border:1px solid rgba(107,122,94,0.2);border-radius:2px;margin-bottom:1rem;">
+                    <i class="fa fa-check-circle" style="color:var(--moss);font-size:1rem;"></i>
+                    <div>
+                        <p style="font-size:0.78rem;font-weight:600;color:var(--moss);">Subscription active</p>
+                        <p style="font-size:0.72rem;color:var(--bark);margin-top:0.1rem;">
+                            Expires on {{ user_subscription.expires_on|date:"j F Y" }} &middot;
+                            {{ user_subscription.subscription.currency|upper }}
+                            {{user_subscription.subscription.price }}/
+                            {{user_subscription.subscription.valid_no_of_days}} days
+                        </p>
+                    </div>
+                </div>
+
+                <!-- <a href="" class="btn-secondary"
+                    style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.82rem;">
+                    <i class="fa fa-refresh"></i> Renew or Change Plan
+                </a> -->
+
+                {% else %}
+
+                <!-- INACTIVE / NO SUBSCRIPTION STATE -->
+                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+                    <span style="font-size:0.9rem;font-weight:500;color:var(--espresso);">No active plan</span>
+                    <span class="badge badge-pending" id="subBadge"><i class="fa fa-times-circle"></i>
+                        Inactive</span>
+                </div>
+
+                <div
+                    style="display:flex;align-items:center;gap:0.6rem;padding:0.85rem;background:rgba(193,104,76,0.07);border:1px solid rgba(193,104,76,0.2);border-radius:2px;margin-bottom:1rem;">
+                    <i class="fa fa-exclamation-circle" style="color:var(--terracotta);font-size:1rem;"></i>
+                    <div>
+                        <p style="font-size:0.78rem;font-weight:600;color:var(--terracotta);">No subscription found
+                        </p>
+                        <p style="font-size:0.72rem;color:var(--bark);margin-top:0.1rem;">Subscribe to start
+                            receiving booking requests and manage your listings.</p>
+                    </div>
+                </div>
+
+                <!-- PLAN CARDS -->
+                <div
+                    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.75rem;margin-bottom:1.25rem;">
+                    {% for plan in subscription_plans %}
+                    <div
+                        style="border:1px solid rgba(107,122,94,0.25);border-radius:2px;padding:0.9rem 1rem;background:rgba(107,122,94,0.03);">
+                        <p style="font-size:0.78rem;font-weight:600;color:var(--espresso);margin-bottom:0.3rem;">
+                            {{plan.type }}</p>
+                        <p style="font-size:1.1rem;font-weight:600;color:var(--moss);margin-bottom:0.2rem;">
+                            {{plan.get_currency_display}} {{ plan.price }}
+                        </p>
+                        <p style="font-size:0.7rem;color:var(--bark);margin-bottom:0.85rem;">Valid for
+                            {{ plan.valid_no_of_days }} days</p>
+                        <a href="{% url 'subs_booking_initiate' plan.id %}" class="btn-primary"
+                            style="display:block;text-align:center;font-size:0.78rem;padding:0.4rem 0.6rem;">
+                            <i class="fa fa-bolt"></i> Subscribe
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% endif %}
             </div>
         </div>
-
     </div>
 </main>
 

@@ -57,7 +57,8 @@ class UserSubscriptionBooking(models.Model):
     s_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     s_currency = models.CharField(default=Subscription.CURRENCY_CHOICES.NPR)
     status = models.CharField(choices=STATUS, default=STATUS.PENDING)
-    khalti_status = models.CharField(max_length=50, null=True)
+    khalti_status = models.CharField(max_length=50, null=True, help_text="Exact status from khalti")
+    pidx = models.CharField(max_length=50, null=True, help_text="Initial payment request id from khalti")
     
     def __str__(self):
         return self.user.email

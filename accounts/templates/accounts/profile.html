@@ -959,9 +959,9 @@
                         <p style="font-size:0.78rem;font-weight:600;color:var(--moss);">Subscription active</p>
                         <p style="font-size:0.72rem;color:var(--bark);margin-top:0.1rem;">
                             Expires on {{ user_subscription.expires_on|date:"j F Y" }} &middot;
-                            {{ user_subscription.subscription.currency|upper }} {{
-                            user_subscription.subscription.price }}/{{
-                            user_subscription.subscription.valid_no_of_days }} days
+                            {{ user_subscription.subscription.currency|upper }}
+                            {{user_subscription.subscription.price }}/
+                            {{user_subscription.subscription.valid_no_of_days}} days
                         </p>
                     </div>
                 </div>
@@ -1004,7 +1004,7 @@
                         </p>
                         <p style="font-size:0.7rem;color:var(--bark);margin-bottom:0.85rem;">Valid for
                             {{ plan.valid_no_of_days }} days</p>
-                        <a href="" class="btn-primary"
+                        <a href="{% url 'subs_booking_initiate' plan.id %}" class="btn-primary"
                             style="display:block;text-align:center;font-size:0.78rem;padding:0.4rem 0.6rem;">
                             <i class="fa fa-bolt"></i> Subscribe
                         </a>

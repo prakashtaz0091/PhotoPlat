@@ -29,7 +29,7 @@ class UserSubscription(models.Model):
     
     @property
     def expires_on(self):
-        return self.start_date + timedelta(days=self.subscription.valid_no_of_days)
+        return self.created_at + timedelta(days=self.subscription.valid_no_of_days)
     
     @property
     def is_expired(self):
@@ -39,7 +39,7 @@ class UserSubscription(models.Model):
         
     
     def __str__(self):
-        return self.user
+        return self.user.email
     
     
 class UserSubscriptionBooking(models.Model):
@@ -57,7 +57,7 @@ class UserSubscriptionBooking(models.Model):
     s_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     s_currency = models.CharField(default=Subscription.CURRENCY_CHOICES.NPR)
     status = models.CharField(choices=STATUS, default=STATUS.PENDING)
-    khalti_status = models.CharField(max_length=50)
+    khalti_status = models.CharField(max_length=50, null=True)
     
     def __str__(self):
-        return self.user
+        return self.user.email

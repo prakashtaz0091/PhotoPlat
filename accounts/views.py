@@ -113,7 +113,11 @@ def profile_view(request):
     if request.user.profile is not None:
         form = ProfileForm(instance=request.user.profile, request=request)
         user_subscription = request.user.subscriptions.filter(active=1).first()
+        free_trial = Subscription.objects.get(type__icontains="free")
+        free_trial_done = request.user.subscriptions.filter(subscription=free_trial)  
         subscription_plans = Subscription.objects.all()
+        if free_trial_done:
+            subscription_plans = subscription_plans.exclude(id=free_trial.id)
         context = {
             "profile_form": form,
             "user_subscription": user_subscription,

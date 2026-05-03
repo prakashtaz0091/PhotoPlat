@@ -17,6 +17,7 @@ packaging==26.2
 pillow==12.2.0
 prompt_toolkit==3.0.52
 python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
 redis==7.4.0
 requests==2.33.1
 six==1.17.0

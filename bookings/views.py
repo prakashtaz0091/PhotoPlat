@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from bookings.forms import BookingForm
 from main.models import Package
 from bookings.models import Booking
-from django.db.models import Q
+from django.db.models import Q, Count
 from datetime import timedelta
 from django.contrib import messages
 from . import signals
@@ -53,13 +53,22 @@ def accept_booking(request, booking_id):
     return redirect("list_booking_page")
 
 def list_booking(request):
-    
-    bookings = Booking.objects.filter(package__photographer__user=request.user)
+    bookings = Booking.objects.filter(
+        package__photographer__user=request.user
+    ).annotate(
+        requested_count=Count('id', filter=Q(status='requested')),
+        accepted_count=Count('id', filter=Q(status='accepted')),
+        delivered_count=Count('id', filter=Q(status='delivered')),
+    )
+
+    # Access counts from the first (or any) object
+    first = bookings.first()
+
     return render(request, "bookings/bookings-list.html", {
         'bookings': bookings,
-        'requested_count': bookings.filter(status='requested').count(),
-        'accepted_count':  bookings.filter(status='accepted').count(),
-        'delivered_count': bookings.filter(status='delivered').count(),
+        'requested_count': first.requested_count if first else 0,
+        'accepted_count':  first.accepted_count if first else 0,
+        'delivered_count': first.delivered_count if first else 0,
     })
 
 def create_booking(request, package_id):

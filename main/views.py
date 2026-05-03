@@ -4,15 +4,17 @@ from main.models import Package
 from django.db.models import Count, Q
 from django.contrib import messages
 from bookings.tasks import auto_reject_old_bookings
-
+from django.views.decorators.cache import cache_page
 
 # http://127.0.0.1:8000
 # http://127.0.0.1:8000/?category=all
 # http://127.0.0.1:8000/?category=wedding
 # http://localhost:8000/?speciality=corporate&max_price=5000
+
+@cache_page(60*2)
 def home(request):
-    auto_reject_old_bookings(repeat=5)
-    photographers = Profile.objects.filter(kyc_verified="verified", email_verified="verified")
+    # auto_reject_old_bookings(repeat=5)
+    photographers = Profile.objects.filter(kyc_verified="verified", email_verified="verified").prefetch_related("specialities")
     packages = Package.objects.filter(active=True)
     
     speciality_slug = request.GET.get('speciality')

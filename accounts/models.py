@@ -4,6 +4,7 @@ from main.validators import validate_file_size
 from django.utils.text import slugify
 from datetime import timedelta
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 
@@ -98,28 +99,28 @@ class Profile(models.Model):
     
 
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
-    fullname = models.CharField(max_length=60, null=True)
-    date_of_birth = models.DateField(null=True)
-    citizenship_no = models.CharField(max_length=20, null=True) # xx-xx-xx-xxxxx
-    issued_district = models.CharField(max_length=30, null=True)
-    permanent_address = models.CharField(max_length=100, null=True)
-    specialities = models.ManyToManyField(Speciality, related_name="profiles")
+    fullname = models.CharField(max_length=60, null=True, verbose_name=_("Full Name"))
+    date_of_birth = models.DateField(null=True, verbose_name=_("Date of birth"))
+    citizenship_no = models.CharField(max_length=20, null=True, verbose_name=_("Citizenship No")) # xx-xx-xx-xxxxx
+    issued_district = models.CharField(max_length=30, null=True, verbose_name=_("Issued District"))
+    permanent_address = models.CharField(max_length=100, null=True, verbose_name=_("Permanent Address"))
+    specialities = models.ManyToManyField(Speciality, related_name="profiles", verbose_name=_("Specialities"))
     
     # documents
-    profile_photo = models.ImageField(upload_to="profile_photos", null=True, blank=True, validators=[validate_file_size])
-    citizenship_front = models.ImageField(upload_to="citizenships", null=True, blank=True, validators=[validate_file_size])
-    citizenship_back = models.ImageField(upload_to="citizenships", null=True, blank=True, validators=[validate_file_size])
+    profile_photo = models.ImageField(upload_to="profile_photos", null=True, blank=True, validators=[validate_file_size], verbose_name=_("Profile Photo"))
+    citizenship_front = models.ImageField(upload_to="citizenships", null=True, blank=True, validators=[validate_file_size], verbose_name=_("Citizenship Front"))
+    citizenship_back = models.ImageField(upload_to="citizenships", null=True, blank=True, validators=[validate_file_size], verbose_name=_("Citizenship Back"))
     
     # verification
-    email_verified = models.CharField(choices=EMAIL_STATUS, default=EMAIL_STATUS.PENDING)
-    kyc_verified = models.CharField(choices=KYC_STATUS, default=KYC_STATUS.NOT_SUBMITTED)
+    email_verified = models.CharField(choices=EMAIL_STATUS, default=EMAIL_STATUS.PENDING, verbose_name=_("Email Verification Status"))
+    kyc_verified = models.CharField(choices=KYC_STATUS, default=KYC_STATUS.NOT_SUBMITTED, verbose_name=_("KYC Verification Status"))
     
     # rejection reason
-    rejection_reason = models.TextField(null=True, blank=True)
+    rejection_reason = models.TextField(null=True, blank=True, verbose_name=_("Rejection Reason"))
     
     # pricing
-    currency = models.CharField(choices=CURRENCY_CHOICES, default="npr")
-    per_day_fee = models.PositiveIntegerField(default=0) 
+    currency = models.CharField(choices=CURRENCY_CHOICES, default="npr", verbose_name=_("Currency"))
+    per_day_fee = models.PositiveIntegerField(default=0, verbose_name=_("Per day fee")) 
     
     def __str__(self):
         return f"{self.user.email}'s profile"

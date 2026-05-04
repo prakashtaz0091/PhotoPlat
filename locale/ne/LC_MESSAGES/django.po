@@ -1,0 +1,218 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 21:03+0545\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: accounts/forms.py:13
+msgid "Full name"
+msgstr "पूरा नाम"
+
+#: accounts/forms.py:21
+msgid "e.g. 23-01-75-12345"
+msgstr "जस्तै: २३-०१-७५-१२३४५"
+
+#: accounts/forms.py:25
+msgid "e.g. Kathmandu"
+msgstr "जस्तै: काठमाडौं"
+
+#: accounts/forms.py:29
+msgid "Ward No., VDC/Municipality, District, Province"
+msgstr "वडा नं., गा.वि.स./नगरपालिका, जिल्ला, प्रदेश"
+
+#: accounts/forms.py:33
+msgid "eg. Wedding photoshoot"
+msgstr "जस्तै: विवाह फोटोसुट"
+
+#: accounts/forms.py:47
+msgid "Eg. 15000"
+msgstr "जस्तै: १५०००"
+
+#: accounts/models.py:102
+msgid "Full Name"
+msgstr "पूरा नाम"
+#: accounts/models.py:103
+msgid "Date of birth"
+msgstr "जन्म मिति"
+
+#: accounts/models.py:104
+msgid "Citizenship No"
+msgstr "नागरिकता नं."
+
+#: accounts/models.py:105
+msgid "Issued District"
+msgstr "जारी जिल्ला"
+
+#: accounts/models.py:106
+msgid "Permanent Address"
+msgstr "स्थायी ठेगाना"
+
+#: accounts/models.py:107
+msgid "Specialities"
+msgstr "विशेषताहरू"
+
+#: accounts/models.py:110
+msgid "Profile Photo"
+msgstr "प्रोफाइल फोटो"
+
+#: accounts/models.py:111
+msgid "Citizenship Front"
+msgstr "नागरिकताको अगाडिको भाग"
+
+#: accounts/models.py:112
+msgid "Citizenship Back"
+msgstr "नागरिकताको पछाडिको भाग"
+
+#: accounts/models.py:115
+msgid "Email Verification Status"
+msgstr "इमेल प्रमाणीकरण स्थिति"
+
+#: accounts/models.py:116
+msgid "KYC Verification Status"
+msgstr "KYC प्रमाणीकरण स्थिति"
+
+#: accounts/models.py:119
+msgid "Rejection Reason"
+msgstr "अस्वीकृतिको कारण"
+
+#: accounts/models.py:122
+msgid "Currency"
+msgstr "मुद्रा"
+
+#: accounts/models.py:123
+msgid "Per day fee"
+msgstr "प्रति दिन शुल्क"
+
+#: bookings/models.py:9
+msgid "Requested"
+msgstr "अनुरोध गरिएको"
+
+#: bookings/models.py:10
+msgid "Accepted"
+msgstr "स्वीकृत"
+
+#: bookings/models.py:11
+msgid "Rejected"
+msgstr "अस्वीकृत"
+
+#: bookings/models.py:12
+msgid "Delivered"
+msgstr "डेलिभर गरिएको"
+
+#: main/templates/main/home.html:333
+msgid "Nepal's Finest Photography Network"
+msgstr "नेपालको उत्कृष्ट फोटोग्राफी सञ्जाल"
+
+#: main/templates/main/home.html:337
+msgid ""
+"\n"
+"            Every Moment <em>Deserves</em><br>\n"
+"            a Perfect Frame\n"
+"            "
+msgstr ""
+"\n"
+"            हरेक क्षण <em>योग्य छ</em><br>\n"
+"            एक सही फ्रेमको\n"
+"            "
+
+#: main/templates/main/home.html:344
+msgid ""
+"\n"
+"            Connect with talented photographers across Nepal for weddings, "
+"portraits, events, and beyond. Find your\n"
+"            ideal photographer, compare portfolios, and book in minutes.\n"
+"            "
+msgstr ""
+"\n"
+"            विवाह, पोर्ट्रेट, कार्यक्रम र अन्यका लागि नेपालभरका प्रतिभाशाली "
+"फोटोग्राफरहरूसँग जोडिनुहोस्। आफ्नो\n"
+"            आदर्श फोटोग्राफर खोज्नुहोस्, पोर्टफोलियो तुलना गर्नुहोस्, र मिनेटमै बुक "
+"गर्नुहोस्।\n"
+"            "
+
+#: main/templates/main/home.html:352
+msgid "Find a Photographer"
+msgstr "फोटोग्राफर खोज्नुहोस्"
+
+#: main/templates/main/home.html:354
+msgid "See How It Works"
+msgstr "यो कसरी काम गर्छ हेर्नुहोस्"
+
+#: main/templates/main/home.html:360
+msgid "2,400+"
+msgstr "२,४००+"
+
+#: main/templates/main/home.html:361
+msgid "Photographers"
+msgstr "फोटोग्राफरहरू"
+
+#: main/templates/main/home.html:364
+msgid "18K"
+msgstr "१८ हजार"
+
+#: main/templates/main/home.html:365
+msgid "Happy Clients"
+msgstr "सन्तुष्ट ग्राहकहरू"
+
+#: main/templates/main/home.html:368
+msgid "4.9★"
+msgstr "४.९★"
+
+#: main/templates/main/home.html:369
+msgid "Avg. Rating"
+msgstr "औसत रेटिङ"
+
+#: main/templates/main/home.html:408
+msgid "Verified Professionals"
+msgstr "प्रमाणित पेशेवरहरू"
+
+#: main/templates/main/home.html:409
+msgid "Every photographer is background-checked"
+msgstr "हरेक फोटोग्राफरको पृष्ठभूमि जाँच गरिएको छ"
+
+#: main/templates/main/home.html:415
+msgid "Secure Payments"
+msgstr "सुरक्षित भुक्तानी"
+
+#: main/templates/main/home.html:416
+#, python-format
+msgid "100%% safe escrow transactions"
+msgstr "१००%% सुरक्षित एस्क्रो कारोबार"
+
+#: main/templates/main/home.html:422
+msgid "Free Cancellation"
+msgstr "नि:शुल्क रद्दीकरण"
+
+#: main/templates/main/home.html:423
+msgid "Up to 48 hours before your shoot"
+msgstr "शूटभन्दा ४८ घण्टा अगाडिसम्म"
+
+#: main/templates/main/home.html:429
+msgid "24/7 Support"
+msgstr "२४/७ सहायता"
+
+#: main/templates/main/home.html:430
+msgid "Always here when you need us"
+msgstr "जब पनि आवश्यक पर्छ, हामी सधैं यहाँ छौं"
+
+#: project/settings.py:162
+msgid "English"
+msgstr ""
+
+#: project/settings.py:163
+msgid "Nepali"
+msgstr ""

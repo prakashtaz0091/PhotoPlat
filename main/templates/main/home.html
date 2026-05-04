@@ -1,4 +1,6 @@
 {% extends "main/base.html" %}
+{% load i18n %}
+
 
 {% block extra_head %}
 <style>
@@ -327,37 +329,44 @@
 <!-- ====== HERO ====== -->
 <section class="hero">
     <div class="hero-left">
-        <div class="hero-eyebrow">Nepal's Finest Photography Network</div>
+        <div class="hero-eyebrow">
+            {% blocktrans %}Nepal's Finest Photography Network{% endblocktrans %}
+        </div>
 
         <h1 class="hero-title">
+            {% blocktrans %}
             Every Moment <em>Deserves</em><br>
             a Perfect Frame
+            {% endblocktrans %}
         </h1>
 
         <p class="hero-subtitle">
+            {% blocktrans %}
             Connect with talented photographers across Nepal for weddings, portraits, events, and beyond. Find your
             ideal photographer, compare portfolios, and book in minutes.
+            {% endblocktrans %}
+
         </p>
 
         <div class="hero-actions">
-            <a href="#" class="btn-primary">Find a Photographer</a>
+            <a href="#" class="btn-primary">{% trans 'Find a Photographer' %}</a>
             <a href="#" class="btn-secondary">
-                <i class="fa fa-play-circle"></i> See How It Works
+                <i class="fa fa-play-circle"></i> {% trans 'See How It Works' %}
             </a>
         </div>
 
         <div class="hero-stats">
             <div>
-                <div class="stat-num">2,400+</div>
-                <div class="stat-label">Photographers</div>
+                <div class="stat-num">{% trans '2,400+' %}</div>
+                <div class="stat-label">{% trans 'Photographers' %}</div>
             </div>
             <div>
-                <div class="stat-num">18K</div>
-                <div class="stat-label">Happy Clients</div>
+                <div class="stat-num">{% trans '18K' %}</div>
+                <div class="stat-label">{% trans 'Happy Clients' %}</div>
             </div>
             <div>
-                <div class="stat-num">4.9★</div>
-                <div class="stat-label">Avg. Rating</div>
+                <div class="stat-num">{% trans '4.9★' %}</div>
+                <div class="stat-label">{% trans 'Avg. Rating' %}</div>
             </div>
         </div>
     </div>
@@ -396,29 +405,29 @@
         <div class="trust-item">
             <i class="fa fa-shield trust-icon"></i>
             <div class="trust-text">
-                <strong>Verified Professionals</strong>
-                <span>Every photographer is background-checked</span>
+                <strong>{% trans 'Verified Professionals' %}</strong>
+                <span>{% trans 'Every photographer is background-checked' %}</span>
             </div>
         </div>
         <div class="trust-item">
             <i class="fa fa-lock trust-icon"></i>
             <div class="trust-text">
-                <strong>Secure Payments</strong>
-                <span>100% safe escrow transactions</span>
+                <strong>{% trans 'Secure Payments' %}</strong>
+                <span>{% trans '100% safe escrow transactions' %}</span>
             </div>
         </div>
         <div class="trust-item">
             <i class="fa fa-refresh trust-icon"></i>
             <div class="trust-text">
-                <strong>Free Cancellation</strong>
-                <span>Up to 48 hours before your shoot</span>
+                <strong>{% trans "Free Cancellation" %}</strong>
+                <span>{% trans "Up to 48 hours before your shoot" %}</span>
             </div>
         </div>
         <div class="trust-item">
             <i class="fa fa-headphones trust-icon"></i>
             <div class="trust-text">
-                <strong>24/7 Support</strong>
-                <span>Always here when you need us</span>
+                <strong>{% trans "24/7 Support" %}</strong>
+                <span>{% trans "Always here when you need us" %}</span>
             </div>
         </div>
     </div>

@@ -1,14 +1,15 @@
 from django.db import models
 from datetime import date, timedelta
+from django.utils.translation import gettext_lazy as _
 
 
 class Booking(models.Model):
     
     class STATUS_CHOICES(models.TextChoices):
-        REQUESTED = ('requested', 'Requested')
-        ACCEPTED = ('accepted', 'Accepted')
-        REJECTED = ('rejected', 'Rejected')
-        DELIVERED = ('delivered', 'Delivered')
+        REQUESTED = ('requested', _('Requested'))
+        ACCEPTED = ('accepted', _('Accepted'))
+        REJECTED = ('rejected', _('Rejected'))
+        DELIVERED = ('delivered', _('Delivered'))
         
     class AUTHOR_CHOICES(models.TextChoices):
         PHOTGRAPHER = ('photographer', 'Photographer')

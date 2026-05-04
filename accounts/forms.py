@@ -1,5 +1,6 @@
 from django import forms
 from accounts.models import Profile
+from django.utils.translation import gettext_lazy as _
 
 
 class ProfileForm(forms.ModelForm):
@@ -9,7 +10,7 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             "fullname": forms.TextInput(attrs={
                 "class": "form-input mb-5",
-                "placeholder": "Full name",
+                "placeholder": _("Full name"),
             }),
             "date_of_birth": forms.DateInput(attrs={
                 "class": "form-input mb-5",
@@ -17,19 +18,19 @@ class ProfileForm(forms.ModelForm):
             }),
             "citizenship_no": forms.TextInput(attrs={
                 "class": "form-input mb-5",
-                "placeholder": "e.g. 23-01-75-12345",
+                "placeholder": _("e.g. 23-01-75-12345"),
             }),
             "issued_district": forms.TextInput(attrs={
                 "class": "form-input mb-5",
-                "placeholder": "e.g. Kathmandu",
+                "placeholder": _("e.g. Kathmandu"),
             }),
             "permanent_address": forms.TextInput(attrs={
                 "class": "form-input mb-5",
-                "placeholder": "Ward No., VDC/Municipality, District, Province",
+                "placeholder": _("Ward No., VDC/Municipality, District, Province"),
             }),
             "speciality": forms.TextInput(attrs={
                 "class": "form-input mb-5",
-                "placeholder": "eg. Wedding photoshoot",
+                "placeholder": _("eg. Wedding photoshoot"),
             }),
             "citizenship_front": forms.FileInput(attrs={
                 "class": "form-input mb-5",
@@ -43,7 +44,7 @@ class ProfileForm(forms.ModelForm):
                 "class": "form-input mb-5"}),
             "per_day_fee": forms.TextInput(attrs={
                 "class": "form-input mb-5",
-                "placeholder": "Eg. 15000"
+                "placeholder": _("Eg. 15000")
                 }),
             "specialities": forms.CheckboxSelectMultiple(
                 attrs={

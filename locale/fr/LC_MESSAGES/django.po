@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 21:06+0545\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: accounts/forms.py:13
+msgid "Full name"
+msgstr "Nom complet"
+
+#: accounts/forms.py:21
+msgid "e.g. 23-01-75-12345"
+msgstr "ex. 23-01-75-12345"
+
+#: accounts/forms.py:25
+msgid "e.g. Kathmandu"
+msgstr "ex. Katmandou"
+
+#: accounts/forms.py:29
+msgid "Ward No., VDC/Municipality, District, Province"
+msgstr "N° de ward, VDC/Municipalité, District, Province"
+
+#: accounts/forms.py:33
+msgid "eg. Wedding photoshoot"
+msgstr "ex. Séance photo de mariage"
+
+#: accounts/forms.py:47
+msgid "Eg. 15000"
+msgstr "ex. 15000"
+
+#: accounts/models.py:102
+msgid "Full Name"
+msgstr "Nom complet"
+
+#: accounts/models.py:103
+msgid "Date of birth"
+msgstr "Date de naissance"
+
+#: accounts/models.py:104
+msgid "Citizenship No"
+msgstr "N° de citoyenneté"
+
+#: accounts/models.py:105
+msgid "Issued District"
+msgstr "District d'émission"
+
+#: accounts/models.py:106
+msgid "Permanent Address"
+msgstr "Adresse permanente"
+
+#: accounts/models.py:107
+msgid "Specialities"
+msgstr "Spécialités"
+
+#: accounts/models.py:110
+msgid "Profile Photo"
+msgstr "Photo de profil"
+
+#: accounts/models.py:111
+msgid "Citizenship Front"
+msgstr "Recto de la citoyenneté"
+
+#: accounts/models.py:112
+msgid "Citizenship Back"
+msgstr "Verso de la citoyenneté"
+
+#: accounts/models.py:115
+msgid "Email Verification Status"
+msgstr "Statut de vérification de l'e-mail"
+
+#: accounts/models.py:116
+msgid "KYC Verification Status"
+msgstr "Statut de vérification KYC"
+
+#: accounts/models.py:119
+msgid "Rejection Reason"
+msgstr "Motif de rejet"
+
+#: accounts/models.py:122
+msgid "Currency"
+msgstr "Devise"
+
+#: accounts/models.py:123
+msgid "Per day fee"
+msgstr "Frais par jour"
+
+#: bookings/models.py:9
+msgid "Requested"
+msgstr "Demandé"
+
+#: bookings/models.py:10
+msgid "Accepted"
+msgstr "Accepté"
+
+#: bookings/models.py:11
+msgid "Rejected"
+msgstr "Rejeté"
+
+#: bookings/models.py:12
+msgid "Delivered"
+msgstr "Livré"
+
+#: main/templates/main/home.html:333
+msgid "Nepal's Finest Photography Network"
+msgstr "Le meilleur réseau de photographie du Népal"
+
+#: main/templates/main/home.html:337
+msgid ""
+"\n"
+"            Every Moment <em>Deserves</em><br>\n"
+"            a Perfect Frame\n"
+"            "
+msgstr ""
+"\n"
+"            Chaque Instant <em>Mérite</em><br>\n"
+"            un Cadre Parfait\n"
+"            "
+
+#: main/templates/main/home.html:344
+msgid ""
+"\n"
+"            Connect with talented photographers across Nepal for weddings, "
+"portraits, events, and beyond. Find your\n"
+"            ideal photographer, compare portfolios, and book in minutes.\n"
+"            "
+msgstr ""
+"\n"
+"            Connectez-vous avec des photographes talentueux à travers le Népal pour les mariages, "
+"portraits, événements et bien plus. Trouvez votre\n"
+"            photographe idéal, comparez les portfolios et réservez en quelques minutes.\n"
+"            "
+
+#: main/templates/main/home.html:352
+msgid "Find a Photographer"
+msgstr "Trouver un photographe"
+
+#: main/templates/main/home.html:354
+msgid "See How It Works"
+msgstr "Voir comment ça fonctionne"
+
+#: main/templates/main/home.html:360
+msgid "2,400+"
+msgstr "2 400+"
+
+#: main/templates/main/home.html:361
+msgid "Photographers"
+msgstr "Photographes"
+
+#: main/templates/main/home.html:364
+msgid "18K"
+msgstr "18 000"
+
+#: main/templates/main/home.html:365
+msgid "Happy Clients"
+msgstr "Clients satisfaits"
+
+#: main/templates/main/home.html:368
+msgid "4.9★"
+msgstr "4,9★"
+
+#: main/templates/main/home.html:369
+msgid "Avg. Rating"
+msgstr "Note moyenne"
+
+#: main/templates/main/home.html:408
+msgid "Verified Professionals"
+msgstr "Professionnels vérifiés"
+
+#: main/templates/main/home.html:409
+msgid "Every photographer is background-checked"
+msgstr "Chaque photographe fait l'objet d'une vérification des antécédents"
+
+#: main/templates/main/home.html:415
+msgid "Secure Payments"
+msgstr "Paiements sécurisés"
+
+#: main/templates/main/home.html:416
+#, python-format
+msgid "100%% safe escrow transactions"
+msgstr "100%% de transactions en fiducie sécurisées"
+
+#: main/templates/main/home.html:422
+msgid "Free Cancellation"
+msgstr "Annulation gratuite"
+
+#: main/templates/main/home.html:423
+msgid "Up to 48 hours before your shoot"
+msgstr "Jusqu'à 48 heures avant votre séance"
+
+#: main/templates/main/home.html:429
+msgid "24/7 Support"
+msgstr "Assistance 24h/24 et 7j/7"
+
+#: main/templates/main/home.html:430
+msgid "Always here when you need us"
+msgstr "Toujours disponible quand vous avez besoin de nous"
+
+#: project/settings.py:162
+msgid "English"
+msgstr "Anglais"
+
+#: project/settings.py:163
+msgid "Nepali"
+msgstr "Népalais"

@@ -7,6 +7,7 @@ from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # for language switch
+    path('api/', include("packages_api.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls()
 
 urlpatterns += i18n_patterns(

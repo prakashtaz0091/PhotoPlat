@@ -1,5 +1,17 @@
 from django.db import models
+import uuid
 
+
+class APIKey(models.Model):
+    value = models.UUIDField(help_text="API key for third party integration", default=uuid.uuid4, primary_key=True, editable=False)
+    customer_name = models.CharField(max_length=100)
+    active = models.BooleanField(default=True)
+    
+    created_at = models.DateField(auto_now_add=True)
+    expires_at = models.DateField(null=True, blank=True, editable=False)
+    
+    def __str__(self):
+        return self.customer_name
 
 class PackageManager(models.Manager):
     def for_profile(self, profile):

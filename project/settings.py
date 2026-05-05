@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "background_task",
     "subscriptions",
     "debug_toolbar",
+    "packages_api",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [

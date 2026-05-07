@@ -6,6 +6,7 @@ from .models import UserSubscriptionBooking, Subscription, UserSubscription
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 from django.contrib import messages
+from django.conf import settings
 
 
 @login_required
@@ -34,10 +35,6 @@ def subs_booking_initiate(request, subs_id):
         }
     )
     
-    khalti_dev_base_url = "https://dev.khalti.com/api/v2/"
-    # https://dev.khalti.com/api/v2/epayment/initiate/
-    initiate_url =  khalti_dev_base_url + "epayment/initiate/"
-    
     return_url = request.build_absolute_uri(reverse("khalti_return"))
     website_url = request.build_absolute_uri(reverse("home_page"))
     amount_in_paisa_str = str(subs_booking.s_price*100)
@@ -59,11 +56,11 @@ def subs_booking_initiate(request, subs_id):
     })
     
     headers = {
-        'Authorization': 'key 95f43b44bec34bf1be5f5e4f4adbfdbc',
+        'Authorization': f"key {settings.KHALTI_API_SECRET}",
         'Content-Type': 'application/json',
     }
     
-    response = requests.request("POST", initiate_url, headers=headers, data=payload)
+    response = requests.request("POST", settings.KHALTI_INITIATE_URL, headers=headers, data=payload)
     
     if response.status_code != 200:
         messages.error(request, "Something went wrong !!!")
@@ -81,10 +78,6 @@ def subs_booking_initiate(request, subs_id):
 
 @login_required
 def khalti_return(request):
-    
-    khalti_dev_base_url = "https://dev.khalti.com/api/v2/"
-    # https://dev.khalti.com/api/v2/epayment/lookup/
-    lookup_url =  khalti_dev_base_url + "epayment/lookup/"
     pidx = request.GET.get("pidx")
     
     try:
@@ -102,7 +95,7 @@ def khalti_return(request):
         'Content-Type': 'application/json',
     }
     
-    response = requests.request("POST", lookup_url, headers=headers, data=payload)
+    response = requests.request("POST", settings.KHALTI_LOOKUP_URL, headers=headers, data=payload)
     
     response_data = response.json()
     if response_data.get('status') == "Completed":

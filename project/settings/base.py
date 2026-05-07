@@ -3,7 +3,7 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "True"
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "main.middlewares.RequestMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -142,24 +143,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")  # Your Gmail address
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")   # Use an App Password, not your login password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-AUTO_REJECT_BOOKINGS_INTERVAL = os.environ.get("AUTO_REJECT_BOOKINGS_INTERVAL") # in seconds
-
-
-JAZZMIN_SETTINGS = {
-    "site_title": "PhotoPlat",
-    "site_header": "PhotoPlat",
-    "site_brand": "PhotoPlat",
-    "show_ui_builder": True,    
-}
-JAZZMIN_UI_TWEAKS = {
-    "theme": "minty",
-    "dark_mode_theme": "darkly",
-}
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
-
+AUTO_REJECT_BOOKINGS_INTERVAL = int(os.environ.get("AUTO_REJECT_BOOKINGS_INTERVAL")) # in seconds
 
 LANGUAGES = [
     ('en', _('English')),
@@ -170,3 +154,7 @@ LANGUAGES = [
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
+
+KHALTI_INITIATE_URL = os.environ.get("KHALTI_INITIATE_URL")
+KHALTI_LOOKUP_URL = os.environ.get("KHALTI_LOOKUP_URL")
+KHALTI_API_SECRET = os.environ.get("KHALTI_API_SECRET")

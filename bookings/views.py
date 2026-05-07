@@ -6,8 +6,9 @@ from django.db.models import Q, Count
 from datetime import timedelta
 from django.contrib import messages
 from . import signals
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def confirm_accept_booking(request, booking_id):
     return render(request, "bookings/booking-accept-confirm.html",{
         'booking_id': booking_id
@@ -17,6 +18,7 @@ def detail_booking(request, booking_id):
     
     pass
 
+@login_required
 def reject_booking(request, booking_id):
     """
     only allow to reject those bookings whose status is requested
@@ -28,6 +30,7 @@ def reject_booking(request, booking_id):
     
     return redirect("list_booking_page")
 
+@login_required
 def accept_booking(request, booking_id):
     """
     only allow to accept those bookings whose status is requested
@@ -52,6 +55,7 @@ def accept_booking(request, booking_id):
     
     return redirect("list_booking_page")
 
+@login_required
 def list_booking(request):
     bookings = Booking.objects.filter(
         package__photographer__user=request.user

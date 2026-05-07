@@ -1,6 +1,8 @@
 db.sqlite3
 venv
 .env
+.env.local
+.env.production
 __pycache__
 media
 *.mo

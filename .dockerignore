@@ -1,0 +1,36 @@
+# Version control
+.git
+.gitignore
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Local settings and secrets
+local_settings.py
+.env
+.env.local
+.env.production
+
+# Database files (if using SQLite locally)
+db.sqlite3
+db.sqlite3-journal
+
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+
+# Docker files (optional, to avoid copying them into the build context unnecessarily)
+Dockerfile
+docker-compose.yml
+.dockerignoreCopied!   
+
+static

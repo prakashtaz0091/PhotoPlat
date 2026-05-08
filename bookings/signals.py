@@ -6,6 +6,9 @@ from django.conf import settings
 from main.middlewares import get_current_request
 from django.urls import reverse
 from .tasks import notify_booking_update_task
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 BOOKING_REQUEST_TEMPLATE = """
     <!DOCTYPE html>
@@ -234,3 +237,12 @@ def notify_booking_update(sender, instance, created, **kwargs):
         to = [instance.email]
     print("Message prepared to notify for booking")
     notify_booking_update_task(to_email=to, message=message)
+    
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "notifications",
+        {
+            "type": "send_notification",
+            "message": "bookings updated"
+        }
+    )

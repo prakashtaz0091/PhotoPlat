@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "packages_api",
     "rest_framework",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -71,7 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "project.wsgi.application"
-
+ASGI_APPLICATION = "project.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -158,3 +159,13 @@ LOCALE_PATHS = [
 KHALTI_INITIATE_URL = os.environ.get("KHALTI_INITIATE_URL")
 KHALTI_LOOKUP_URL = os.environ.get("KHALTI_LOOKUP_URL")
 KHALTI_API_SECRET = os.environ.get("KHALTI_API_SECRET")
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}

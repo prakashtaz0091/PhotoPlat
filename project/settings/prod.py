@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "subscriptions",
     "packages_api",
     "rest_framework",
+    "channels"
 ]
 
 

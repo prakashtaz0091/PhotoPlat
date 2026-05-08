@@ -18,6 +18,7 @@ def notify_booking_update_task(to_email, message=""):
     print("Notify booking update send sent ", to_email)
     
     
+    
 @background(schedule=5)
 def auto_reject_old_bookings():
     print("Scanning old bookings ", timezone.now())

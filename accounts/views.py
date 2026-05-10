@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from .admin import UserCreationForm
 from django.contrib import messages
@@ -13,6 +14,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .tasks import notify_for_kyc_submission, notify_otp_for_email_verification
 from subscriptions.models import Subscription
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -111,19 +114,26 @@ def submit_kyc(request):
 @login_required
 def profile_view(request):
     if request.user.profile is not None:
+        logger.debug("user.profile: %s", request.user.profile)
         form = ProfileForm(instance=request.user.profile, request=request)
+        logger.debug("user_form: %s", form)
         user_subscription = request.user.subscriptions.filter(active=1).first()
+        logger.debug("user_subs: %s", user_subscription)
         free_trial = Subscription.objects.get(type__icontains="free")
-        free_trial_done = request.user.subscriptions.filter(subscription=free_trial)  
+        logger.debug("free_trial: %s", free_trial)
+        free_trial_done = request.user.subscriptions.filter(subscription=free_trial)
+        logger.debug("free_trial_done: %s", free_trial_done)
         subscription_plans = Subscription.objects.all()
+        logger.debug("subscription_plans: %s", subscription_plans)
         if free_trial_done:
             subscription_plans = subscription_plans.exclude(id=free_trial.id)
         context = {
             "profile_form": form,
             "user_subscription": user_subscription,
-            "subscription_plans": subscription_plans
+            "subscription_plans": subscription_plans,
         }
     else:
+        logger.warning("User %s has no profile", request.user)
         form = ProfileForm(request=request)
         context = {
             "profile_form": form,

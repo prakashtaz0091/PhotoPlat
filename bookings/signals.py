@@ -8,6 +8,7 @@ from django.urls import reverse
 from .tasks import notify_booking_update_task
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from notifications.consumers import generate_group_name
 
 
 BOOKING_REQUEST_TEMPLATE = """
@@ -221,6 +222,16 @@ def notify_booking_update(sender, instance, created, **kwargs):
             booking_management_uri
             )
         to = [instance.package.photographer.user.email]
+        channel_layer = get_channel_layer()
+        group_name = generate_group_name(instance.package.photographer.user.email)
+        print("sending to group", group_name)
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                "type": "send_notification",
+                "message": "bookings updated"
+            }
+        )
     else:
         message_text = ""
         if instance.status == Booking.STATUS_CHOICES.REJECTED:
@@ -235,14 +246,6 @@ def notify_booking_update(sender, instance, created, **kwargs):
             instance.get_status_display()
             ) 
         to = [instance.email]
+
     print("Message prepared to notify for booking")
     notify_booking_update_task(to_email=to, message=message)
-    
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        "notifications",
-        {
-            "type": "send_notification",
-            "message": "bookings updated"
-        }
-    )

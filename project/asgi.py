@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+from channels.auth import AuthMiddlewareStack
+
 
 DJANGO_ENV = os.environ.get("DJANGO_ENV")
 
@@ -17,7 +19,8 @@ from notifications import routing
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": URLRouter(
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
         routing.websocket_urlpatterns
-    ),
+    )),
 })

@@ -71,6 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "project.wsgi.application"
+ASGI_APPLICATION = "project.asgi.application"
 
 
 # Database
@@ -162,3 +163,12 @@ LOCALE_PATHS = [
 KHALTI_INITIATE_URL = os.environ.get("KHALTI_INITIATE_URL")
 KHALTI_LOOKUP_URL = os.environ.get("KHALTI_LOOKUP_URL")
 KHALTI_API_SECRET = os.environ.get("KHALTI_API_SECRET")
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}

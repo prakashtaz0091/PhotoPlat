@@ -981,39 +981,385 @@
     <!-- ====== NAVBAR ====== -->
     <nav id="navbar">
         <div class="nav-inner">
-            <a href="{% url 'home_page' %}" class="logo">Photo<span>Plat</span></a>
+
+            <a href="{% url 'home_page' %}" class="logo">
+                Photo<span>Plat</span>
+            </a>
+
             <div class="nav-links">
+
+                <!-- Language Selector -->
                 <form id="set-lang-form" action="{% url 'set_language' %}" method="post">
                     {% csrf_token %}
+
                     <div
-                        style="position: relative; display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 6px 14px 6px 10px; backdrop-filter: blur(8px);">
-                        <span style="font-size: 14px; line-height: 1;">🌐</span>
+                        style="
+                            position: relative;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                            background: rgba(255,255,255,0.08);
+                            border: 1px solid rgba(255,255,255,0.2);
+                            border-radius: 999px;
+                            padding: 6px 14px 6px 10px;
+                            backdrop-filter: blur(8px);
+                        ">
+
+                        <span style="font-size: 14px;">🌐</span>
+
                         <select id="lang-select" name="language"
-                            style="appearance: none; -webkit-appearance: none; background: transparent; border: none; outline: none; color: black; font-size: 13px; font-weight: 500; cursor: pointer; letter-spacing: 0.3px;">
-                            <option value="en" {% if LANGUAGE_CODE == "en" %} selected {% endif %}
-                                style="background: #1a1a2e; color: #fff;">English</option>
-                            <option value="ne" {% if LANGUAGE_CODE == "ne" %}selected{% endif %}
-                                style="background: #1a1a2e; color: #fff;">नेपाली</option>
-                            <option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}
-                                style="background: #1a1a2e; color: #fff;">Français</option>
+                            style="
+                                appearance: none;
+                                -webkit-appearance: none;
+                                background: transparent;
+                                border: none;
+                                outline: none;
+                                color: black;
+                                font-size: 13px;
+                                font-weight: 500;
+                                cursor: pointer;
+                                letter-spacing: 0.3px;
+                            ">
+
+                            <option value="en"
+                                {% if LANGUAGE_CODE == "en" %}selected{% endif %}
+                                style="background:#1a1a2e;color:#fff;">
+                                English
+                            </option>
+
+                            <option value="ne"
+                                {% if LANGUAGE_CODE == "ne" %}selected{% endif %}
+                                style="background:#1a1a2e;color:#fff;">
+                                नेपाली
+                            </option>
+
+                            <option value="fr"
+                                {% if LANGUAGE_CODE == "fr" %}selected{% endif %}
+                                style="background:#1a1a2e;color:#fff;">
+                                Français
+                            </option>
+
                         </select>
-                        <span style="font-size: 11px; color: rgba(255,255,255,0.7); pointer-events: none;">▾</span>
+
+                        <span
+                            style="
+                                font-size: 11px;
+                                color: rgba(255,255,255,0.7);
+                                pointer-events: none;
+                            ">
+                            ▾
+                        </span>
+
                     </div>
                 </form>
 
                 {% if not request.user.is_authenticated %}
-                <a href="{% url 'login_page' %}">For Photographers</a>
+
+                    <a href="{% url 'login_page' %}">
+                        For Photographers
+                    </a>
+
                 {% else %}
-                <a href="{% url 'list_booking_page' %}">Bookings</a>
-                <a href="{% url 'packages_page' %}">Packages</a>
-                <a href="{% url 'profile_page' %}" class="nav-cta">Profile</a>
+
+                    <a href="{% url 'list_booking_page' %}">
+                        Bookings
+                    </a>
+
+                    <a href="{% url 'packages_page' %}">
+                        Packages
+                    </a>
+
+                    <!-- Notifications -->
+                    <div style="position: relative;">
+
+                        <a href="#"
+                            id="notification-btn"
+                            style="
+                                position: relative;
+                                text-decoration: none;
+                                font-size: 20px;
+                            ">
+
+                            🔔
+
+                            <span id="notification-count"
+                                style="
+                                    position:absolute;
+                                    top:-8px;
+                                    right:-10px;
+                                    background:red;
+                                    color:white;
+                                    border-radius:50%;
+                                    min-width:18px;
+                                    height:18px;
+                                    display:none;
+                                    align-items:center;
+                                    justify-content:center;
+                                    font-size:11px;
+                                    font-weight:bold;
+                                    padding:2px;
+                                ">
+                            </span>
+
+                        </a>
+
+                        <!-- Dropdown -->
+                        <div id="notification-dropdown"
+                            style="
+                                display:none;
+                                position:absolute;
+                                right:0;
+                                top:40px;
+                                width:340px;
+                                max-height:400px;
+                                overflow-y:auto;
+                                background:white;
+                                border-radius:14px;
+                                box-shadow:0 10px 30px rgba(0,0,0,.15);
+                                z-index:9999;
+                            ">
+
+                            <div
+                                style="
+                                    padding:14px;
+                                    border-bottom:1px solid #eee;
+                                    font-weight:600;
+                                    font-size:15px;
+                                ">
+                                Notifications
+                            </div>
+
+                            <div id="notification-list"></div>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'profile_page' %}" class="nav-cta">
+                        Profile
+                    </a>
 
                 {% endif %}
-
 
             </div>
         </div>
     </nav>
+
+    <script>
+    (function () {
+
+        // =========================================
+        // LocalStorage Helpers
+        // =========================================
+
+        const STORAGE_KEY = "photoplat_notifications";
+
+        function getNotifications() {
+
+            return JSON.parse(
+                localStorage.getItem(STORAGE_KEY) || "[]"
+            );
+        }
+
+        function saveNotifications(notifications) {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(notifications)
+            );
+        }
+
+        function addNotification(notification) {
+
+            const notifications = getNotifications();
+
+            notifications.unshift({
+                ...notification,
+                created_at: Date.now(),
+                read: false
+            });
+
+            // Keep latest 50
+            const trimmed = notifications.slice(0, 50);
+
+            saveNotifications(trimmed);
+        }
+
+        function markAllRead() {
+
+            const notifications = getNotifications();
+
+            notifications.forEach((n) => {
+                n.read = true;
+            });
+
+            saveNotifications(notifications);
+        }
+
+        // =========================================
+        // Render Notifications
+        // =========================================
+
+        function renderNotifications() {
+
+            const notifications = getNotifications();
+
+            const list = document.getElementById("notification-list");
+
+            const count = document.getElementById("notification-count");
+
+            list.innerHTML = "";
+
+            let unread = 0;
+
+            if (!notifications.length) {
+
+                list.innerHTML = `
+                    <div style="padding:20px;text-align:center;color:gray;">
+                        No notifications
+                    </div>
+                `;
+
+            } else {
+
+                notifications.forEach((n) => {
+
+                    if (!n.read) unread++;
+
+                    const div = document.createElement("div");
+
+                    div.style.padding = "14px";
+
+                    div.style.borderBottom = "1px solid #f1f1f1";
+
+                    div.style.background = n.read
+                        ? "white"
+                        : "#f5f9ff";
+
+                    div.innerHTML = `
+                        <div style="font-size:14px;color:#222;">
+                            ${n.message || "Notification"}
+                        </div>
+
+                        <div
+                            style="
+                                margin-top:6px;
+                                font-size:11px;
+                                color:gray;
+                            ">
+                            ${new Date(n.created_at).toLocaleString()}
+                        </div>
+                    `;
+
+                    list.appendChild(div);
+                });
+            }
+
+            if (unread > 0) {
+
+                count.style.display = "flex";
+
+                count.innerText = unread;
+
+            } else {
+
+                count.style.display = "none";
+            }
+        }
+
+        // =========================================
+        // WebSocket
+        // =========================================
+
+        const protocol = window.location.protocol === "https:"
+            ? "wss"
+            : "ws";
+
+        const ws = new WebSocket(
+            `${protocol}://${window.location.host}/ws/notifications/`
+        );
+
+        ws.onopen = () => {
+            console.log("WebSocket connected");
+        };
+
+        ws.onmessage = (e) => {
+
+            console.log("WS Message:", e.data);
+
+            let data;
+
+            try {
+
+                data = JSON.parse(e.data);
+
+            } catch {
+
+                data = {
+                    message: e.data
+                };
+            }
+
+            addNotification(data);
+
+            renderNotifications();
+        };
+
+        ws.onclose = () => {
+            console.log("WebSocket disconnected");
+        };
+
+        ws.onerror = (err) => {
+            console.error("WebSocket Error:", err);
+        };
+
+        // =========================================
+        // Dropdown Toggle
+        // =========================================
+
+        const btn = document.getElementById("notification-btn");
+
+        const dropdown = document.getElementById("notification-dropdown");
+
+        btn?.addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (dropdown.style.display === "none") {
+
+                dropdown.style.display = "block";
+
+                markAllRead();
+
+                renderNotifications();
+
+            } else {
+
+                dropdown.style.display = "none";
+            }
+        });
+
+        // Close dropdown outside click
+        document.addEventListener("click", function (e) {
+
+            if (
+                dropdown &&
+                !dropdown.contains(e.target) &&
+                !btn.contains(e.target)
+            ) {
+                dropdown.style.display = "none";
+            }
+        });
+
+        // =========================================
+        // Initial Render
+        // =========================================
+
+        renderNotifications();
+
+    })();
+    </script>
+
     {% endblock navbar %}
 
     {% block toast_messages %}

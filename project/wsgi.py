@@ -1,6 +1,5 @@
 import os
 from django.core.wsgi import get_wsgi_application
-from dotenv import load_dotenv
 
 DJANGO_ENV = os.environ.get("DJANGO_ENV")
 

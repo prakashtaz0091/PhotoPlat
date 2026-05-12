@@ -1,11 +1,12 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from bookings.models import Booking
-from django.core.mail import EmailMessage
-from django.conf import settings
 from main.middlewares import get_current_request
 from django.urls import reverse
 from .tasks import notify_booking_update_task
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from notifications.consumers import generate_group_name
 
 BOOKING_REQUEST_TEMPLATE = """
     <!DOCTYPE html>
@@ -218,6 +219,15 @@ def notify_booking_update(sender, instance, created, **kwargs):
             booking_management_uri
             )
         to = [instance.package.photographer.user.email]
+        channel_layer = get_channel_layer()
+        group_name = generate_group_name(instance.package.photographer.user.email)
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                "type": "send_notification",
+                "message": f"New booking request for {instance.name}"
+            }
+        )
     else:
         message_text = ""
         if instance.status == Booking.STATUS_CHOICES.REJECTED:

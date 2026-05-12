@@ -2,7 +2,6 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from dotenv import load_dotenv
 
 def main():
     """Run administrative tasks."""
@@ -10,10 +9,8 @@ def main():
     DJANGO_ENV = os.environ.get("DJANGO_ENV")
     print("env", DJANGO_ENV)
     if DJANGO_ENV == "prod":
-        load_dotenv(".env.production")
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.prod")
     else:
-        load_dotenv(".env.local")
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.local")
 
     try:
